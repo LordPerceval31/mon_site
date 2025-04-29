@@ -1,6 +1,6 @@
 import React from 'react';
 import useTheme from '../../../../hooks/useTheme';
-import ThemeToggle from '../Button/themeToggleProps';
+import DarkModThemeToggle from '../Button/DarkModThemeToggle';
 
 const NavBarTop: React.FC = () => {
   const { colors, isDarkMode } = useTheme();
@@ -12,10 +12,11 @@ const NavBarTop: React.FC = () => {
         backgroundColor: isDarkMode ? colors.background : colors.primary,
         color: colors.text
       }}
+      data-cy="navbar-top" 
     >
       <div className="flex justify-end">
-        <ThemeToggle />
-        </div>
+        <DarkModThemeToggle />
+      </div>
     </nav>
   );
 };

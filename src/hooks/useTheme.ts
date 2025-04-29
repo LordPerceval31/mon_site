@@ -1,9 +1,8 @@
-// src/hooks/useTheme.ts
 import { useTheme as useThemeContext } from "../contexts/themeContext";
 import { ThemeColors, ThemeMode, ColorBlindnessType } from "../themes/theme";
 
-// Interface pour le hook useTheme
-interface UseThemeResult {
+// Renommer cette interface pour éviter toute confusion
+interface UseThemeHookResult {
   // États actuels
   mode: ThemeMode;
   colorBlindnessType: ColorBlindnessType;
@@ -19,8 +18,8 @@ interface UseThemeResult {
   getColor: (colorName: keyof ThemeColors) => string;
 }
 
-//Hook personnalisé pour accéder et manipuler le thème de l'application
-export const useTheme = (): UseThemeResult => {
+// Ce hook étend les fonctionnalités du hook de base du context
+export const useTheme = (): UseThemeHookResult => {
   const context = useThemeContext();
 
   // Ajouter un calcul pour savoir si c'est le mode sombre

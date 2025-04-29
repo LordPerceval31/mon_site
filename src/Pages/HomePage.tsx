@@ -11,6 +11,7 @@ export default function HomePage() {
                 backgroundColor: isDarkMode ? colors.background : colors.background,
                 color: isDarkMode ? colors.primary: colors.neutral
             }}
+            data-cy="home-section"
         >   
             <NavBarTop />
         </section>
