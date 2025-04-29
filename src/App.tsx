@@ -1,5 +1,6 @@
-
+import { Route, Routes } from "react-router-dom";
 import './App.css'
+import HomePage from "./Pages/HomePage";
 
 
 function App() {
@@ -7,10 +8,11 @@ function App() {
 
   return (
     <>
-        <h1 className="flex justify-center text-3xl font-bold underline">
-    Hello world!
-  </h1>
-      </>
+       <Routes>
+        <Route path= "/" element={<HomePage />}></Route>
+       </Routes>
+
+   </>
   )
 }
 
