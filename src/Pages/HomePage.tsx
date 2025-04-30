@@ -13,6 +13,7 @@ export default function HomePage() {
             }}
             data-cy="home-section"
         >   
+        
             <NavBarTop />
         </section>
     );
