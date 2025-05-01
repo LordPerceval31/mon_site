@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from "react";
 import * as THREE from "three";
-import moiTexture from '../../../assets/moi.jpg';
+import moiTexture from '../../../assets/moi.webp';
 
 const DiceSixFaces: React.FC = () => {
   const mountRef = useRef<HTMLDivElement>(null);
@@ -13,13 +13,17 @@ const DiceSixFaces: React.FC = () => {
     // Configuration de la scène
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(70, 1, 0.1, 1000);
-    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, 
+    });
     
     // Lumière
     const light = new THREE.PointLight(0xffffff, 5);
     light.position.set(0, 0, 2);
     scene.add(light);
-    
+
+    // Activer les pixels à haute densité
+    renderer.setPixelRatio(window.devicePixelRatio);
+
     // Mise en place du renderer
     renderer.setSize(mount.clientWidth, mount.clientHeight);
     mount.appendChild(renderer.domElement);
