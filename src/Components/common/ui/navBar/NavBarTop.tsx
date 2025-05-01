@@ -1,33 +1,35 @@
 import React from "react";
-import useTheme from "../../../../hooks/useTheme";
-import DarkModThemeToggle from "../Button/DarkModThemeToggle";
 import DiceSixFaces from "../../../3DModels/Objets/DiceSixFaces";
 import logoImage from "../../../../assets/logo.webp";
+import DarkModeThemeToggle from "../Button/DarkModThemeToggle";
 
 const NavBarTop: React.FC = () => {
-  const { colors, isDarkMode } = useTheme();
-
   return (
     <nav
-      className="w-full transition-colors duration-300 py-4"
-      style={{
-        backgroundColor: isDarkMode ? colors.background : colors.primary,
-        color: colors.text,
-      }}
+      className="w-full transition-colors duration-300 "
       data-cy="navbar-top"
     >
-      <div className="flex justify-between items-center w-full px-4">
-        <div className="w-24 h-24 md:w-28 md:h-28 lg:w-32 lg:h-32">
-          <DiceSixFaces />
+      <div className="flex justify-between ">
+        {/* Premier élément - DiceSixFaces dans un conteneur de taille fixe */}
+        <div className="w-32 h-32 flex items-center justify-center">
+          <div className="w-24 h-24 md:w-28 md:h-28 lg:w-32 lg:h-32">
+            <DiceSixFaces />
+          </div>
         </div>
 
-        <img
-          src={logoImage}
-          alt="Application logo"
-          className="w-16 h-20 md:w-20 md:h-24 lg:w-24 lg:h-28"
-        />
+        {/* Deuxième élément - Logo dans un conteneur de taille fixe */}
+        <div className="w-32 h-32 flex items-center justify-center">
+          <img
+            src={logoImage}
+            alt="Application logo"
+            className="w-16 h-20 md:w-20 md:h-24 lg:w-24 lg:h-28"
+          />
+        </div>
 
-        <DarkModThemeToggle />
+        {/* Troisième élément - DarkModeThemeToggle dans un conteneur de taille fixe */}
+        <div className="w-32 h-32 flex items-center justify-center">
+          <DarkModeThemeToggle />
+        </div>
       </div>
     </nav>
   );

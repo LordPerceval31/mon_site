@@ -1,6 +1,5 @@
 import { useTheme } from '../../../../hooks/useTheme';
 
-
 interface ThemeContextType {
   isDarkMode: boolean;
   toggleMode: () => void;
@@ -18,26 +17,25 @@ const DarkModeThemeToggle = () => {
   // Determine appropriate colors based on current theme
   const buttonBgColor = isDarkMode ? colors.primary : colors.neutral;
   const sunIconColor = isDarkMode ? colors.primary : colors.secondary;
-  const moonIconColor = isDarkMode ? colors.primary : colors.neutral;
+  const moonIconColor = isDarkMode ? colors.secondary : colors.neutral;
   const togglerBgColor = isDarkMode ? colors.background : colors.primary;
-  const togglerPosition = isDarkMode ? 'translate-x-8' : 'translate-x-0';
+  const togglerPosition = isDarkMode ? 'translate-x-5 md:translate-x-6 lg:translate-x-7' : 'translate-x-0';
   
   return (
     <button
       onClick={toggleMode}
+      className="relative w-12 h-6 md:w-14 md:h-7 lg:w-16 lg:h-8 rounded-full flex items-center justify-between px-1 md:px-1.5 lg:px-2"
       style={{ backgroundColor: buttonBgColor }}
       aria-label={isDarkMode ? "Switch to light mode" : "Switch to dark mode"}
       aria-pressed={isDarkMode}
       data-cy="theme-toggle"
     >
       {/* Container for static icons */}
-      <div className="absolute w-full flex justify-between px-1.5 z-10">
+      <div className="relative w-full flex justify-between z-10">
         {/* Sun icon */}
         <svg 
           xmlns="http://www.w3.org/2000/svg" 
-          className={`h-5 w-5 z-20 transition-opacity duration-300 ${
-            isDarkMode ? 'opacity-0' : 'opacity-100'
-          }`}
+          className="h-4 w-4 md:h-5 md:w-5 lg:h-5 lg:w-5 z-20"
           viewBox="0 0 20 20" 
           fill={sunIconColor}
           aria-hidden="true"
@@ -48,9 +46,7 @@ const DarkModeThemeToggle = () => {
         {/* Moon icon */}
         <svg 
           xmlns="http://www.w3.org/2000/svg" 
-          className={`h-5 w-5 z-20 transition-opacity duration-300 ${
-            isDarkMode ? 'opacity-0' : 'opacity-100'
-          }`}
+          className="h-4 w-4 md:h-5 md:w-5 lg:h-5 lg:w-5 z-20"
           viewBox="0 0 20 20" 
           fill={moonIconColor}
           aria-hidden="true"
@@ -61,7 +57,7 @@ const DarkModeThemeToggle = () => {
       
       {/* Moving toggle indicator */}
       <div 
-        className={`h-6 w-6 rounded-full transition-transform duration-300 absolute left-1 ${togglerPosition}`}
+        className={`h-5 w-5 md:h-6 md:w-6 lg:h-7 lg:w-7 rounded-full transition-transform duration-300 absolute left-1 ${togglerPosition}`}
         style={{ backgroundColor: togglerBgColor }}
         data-state={isDarkMode ? "dark" : "light"}
         aria-hidden="true"
