@@ -7,6 +7,8 @@ import Button3DHome from "../Button/Button3DHome";
 import Button3DProjects from "../Button/Button3DProjects";
 import Button3DContact from "../Button/Button3DContact";
 import Button3DSettings from "../Button/Button3DSettings";
+import DynamicMouseLight from "../../../DynamiqueMouseLight";
+import DynamicButton3D from "../../../DynamiqueButton3D";
 
 interface NavbarBottomConfig {
   containerPadding: string;
@@ -17,6 +19,7 @@ interface NavbarBottomConfig {
 interface Button3DProps extends GroupProps {
   rotation?: [number, number, number];
   scale?: number | [number, number, number];
+  onClick?: () => void;
 }
 
 interface ButtonConfig {
@@ -27,35 +30,35 @@ interface ButtonConfig {
 }
 
 const buttonConfigs: ButtonConfig[] = [
-  { 
-    component: Button3DHome, 
+  {
+    component: Button3DHome,
     dataCy: "home-button",
     label: "Home",
-    ariaLabel: "Navigate to home page"
+    ariaLabel: "Navigate to home page",
   },
-  { 
-    component: Button3DAbout, 
+  {
+    component: Button3DAbout,
     dataCy: "about-button",
     label: "About",
-    ariaLabel: "Navigate to about page"
+    ariaLabel: "Navigate to about page",
   },
-  { 
-    component: Button3DProjects, 
+  {
+    component: Button3DProjects,
     dataCy: "projects-button",
     label: "Projects",
-    ariaLabel: "Navigate to projects page"
+    ariaLabel: "Navigate to projects page",
   },
-  { 
-    component: Button3DContact, 
+  {
+    component: Button3DContact,
     dataCy: "contact-button",
     label: "Contact",
-    ariaLabel: "Navigate to contact page"
+    ariaLabel: "Navigate to contact page",
   },
-  { 
-    component: Button3DSettings, 
+  {
+    component: Button3DSettings,
     dataCy: "settings-button",
     label: "Settings",
-    ariaLabel: "Open settings menu"
+    ariaLabel: "Open settings menu",
   },
 ];
 
@@ -128,6 +131,7 @@ const NavbarBottom: React.FC = () => {
         <div className={`flex justify-between items-center`}>
           {buttonConfigs.map((buttonConfig, index) => {
             const ButtonComponent = buttonConfig.component;
+
             return (
               <div
                 key={index}
@@ -135,33 +139,28 @@ const NavbarBottom: React.FC = () => {
                 data-cy={buttonConfig.dataCy}
               >
                 {/* 3D Canvas - Visual Layer */}
-                <Canvas
+                <Canvas 
                 >
-                  <ambientLight intensity={1} />
-                  <directionalLight position={[5, 5, 5]} intensity={1} />
-                  <ButtonComponent
-                    rotation={[Math.PI / 2, 0, 0]}
-                    scale={3}
+                  <ambientLight intensity={0.5} />
+                  <DynamicMouseLight 
+                    intensity={1.5} 
+                    influenceRadius={200} 
                   />
+                  
+                  <DynamicButton3D
+                    baseRotation={[Math.PI / 2, 0, 0]}
+                    influenceRadius={150}  
+                    resetRadius={300}   
+                    rotationIntensity={{ x: 1.5, y: 1.5, z: 1.2 }}
+                    autoRotate={true}
+                    autoRotateSpeed={0.002}
+                    resetSpeed={0.08}
+                  >
+                    <ButtonComponent
+                      onClick={() => console.log(`Clicked ${buttonConfig.label}`)}
+                    />
+                  </DynamicButton3D>
                 </Canvas>
-                {/* Invisible button for accessibility - Interactive Layer */}
-                <button
-                  className="absolute inset-0 "
-                  aria-label={buttonConfig.ariaLabel}
-                  onClick={() => {
-                    // Navigation logic will be handled here
-                    console.log(`Navigating to ${buttonConfig.label}`);
-                  }}
-                  onKeyDown={(e) => {
-                    if (e.key === 'Enter' || e.key === ' ') {
-                      e.preventDefault();
-                      // Same navigation logic as onClick
-                      console.log(`Navigating to ${buttonConfig.label}`);
-                    }
-                  }}
-                >
-                  <span className="sr-only">{buttonConfig.label}</span>
-                </button>
               </div>
             );
           })}
