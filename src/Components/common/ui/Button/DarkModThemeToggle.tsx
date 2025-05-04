@@ -17,7 +17,7 @@ const DarkModeThemeToggle = () => {
   // Determine appropriate colors based on current theme
   const buttonBgColor = isDarkMode ? colors.primary : colors.neutral;
   const sunIconColor = isDarkMode ? colors.primary : colors.secondary;
-  const moonIconColor = isDarkMode ? colors.secondary : colors.neutral;
+  const moonIconColor = isDarkMode ? colors.primary : colors.neutral;
   const togglerBgColor = isDarkMode ? colors.background : colors.primary;
   const togglerPosition = isDarkMode ? 'translate-x-5 md:translate-x-6 lg:translate-x-7' : 'translate-x-0';
   
