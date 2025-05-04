@@ -4,26 +4,22 @@ import logoImage from "../../../../assets/logo.webp";
 import DarkModeThemeToggle from "../Button/DarkModThemeToggle";
 import { useResponsiveSize } from "../../../../hooks/useResponsiveSize";
 
-interface NavbarConfig {
+interface NavbarTopConfig {
   containerPadding: string;
-  containerMaxWidth: string;
-  elementSpacing: string;
   diceSizeContainer: string;
   diceSize: string;
   logoSizeContainer: string;
   logoSize: string;
 }
 
-const NavBarTop: React.FC = () => {
+const NavbarTop: React.FC = () => {
   const screenSize = useResponsiveSize();
 
-  const getNavbarConfig = (): NavbarConfig => {
+  const getNavbarTopConfig = (): NavbarTopConfig => {
     switch (screenSize) {
       case "mobile":
         return {
           containerPadding: "px-4",
-          containerMaxWidth: "max-w-full",
-          elementSpacing: "gap-2",
           diceSizeContainer: "w-20 h-20",
           diceSize: "w-16 h-16",
           logoSizeContainer: "w-20 h-20",
@@ -32,8 +28,6 @@ const NavBarTop: React.FC = () => {
         case "tablette":
           return {
             containerPadding: "px-8",
-            containerMaxWidth: "max-w-3xl",
-            elementSpacing: "gap-6",
             diceSizeContainer: "w-24 h-24",
             diceSize: "w-20 h-20",
             logoSizeContainer: "w-24 h-24",
@@ -42,8 +36,6 @@ const NavBarTop: React.FC = () => {
         case "laptop":
           return {
             containerPadding: "px-8",
-            containerMaxWidth: "max-w-5xl",
-            elementSpacing: "gap-10",
             diceSizeContainer: "w-28 h-28",
             diceSize: "w-24 h-24",
             logoSizeContainer: "w-28 h-28",
@@ -52,8 +44,6 @@ const NavBarTop: React.FC = () => {
       case "desktop":
         return {
           containerPadding: "px-8",
-          containerMaxWidth: "max-w-6xl",
-          elementSpacing: "gap-16",
           diceSizeContainer: "w-32 h-32",
           diceSize: "w-28 h-28",
           logoSizeContainer: "w-32 h-32",
@@ -62,8 +52,6 @@ const NavBarTop: React.FC = () => {
       case "2K":
         return {
           containerPadding: "px-16",
-          containerMaxWidth: "max-w-8xl",
-          elementSpacing: "gap-20",
           diceSizeContainer: "w-36 h-36",
           diceSize: "w-32 h-32",
           logoSizeContainer: "w-36 h-36",
@@ -71,9 +59,7 @@ const NavBarTop: React.FC = () => {
         };
       case "ultrawide":
         return {
-          containerPadding: "px-0",
-          containerMaxWidth: "max-w-[120rem]",
-          elementSpacing: "gap-32",
+          containerPadding: "px-16",
           diceSizeContainer: "w-40 h-40",
           diceSize: "w-36 h-36",
           logoSizeContainer: "w-40 h-40",
@@ -81,9 +67,7 @@ const NavBarTop: React.FC = () => {
         };
       case "4k":
         return {
-          containerPadding: "px-0",
-          containerMaxWidth: "max-w-[140rem]",
-          elementSpacing: "gap-40",
+          containerPadding: "px-16",
           diceSizeContainer: "w-44 h-44",
           diceSize: "w-40 h-40",
           logoSizeContainer: "w-44 h-44",
@@ -92,8 +76,6 @@ const NavBarTop: React.FC = () => {
       default:
         return {
           containerPadding: "px-16",
-          containerMaxWidth: "max-w-5xl",
-          elementSpacing: "gap-10",
           diceSizeContainer: "w-28 h-28",
           diceSize: "w-24 h-24",
           logoSizeContainer: "w-28 h-28",
@@ -102,15 +84,15 @@ const NavBarTop: React.FC = () => {
     }
   };
 
-  const config = getNavbarConfig();
+  const config = getNavbarTopConfig();
 
   return (
     <nav
       className="w-full transition-colors duration-300 fixed top-0 z-50"
       data-cy="navbar-top"
     >
-      <div className={`${config.containerMaxWidth} mx-auto ${config.containerPadding}`}>
-        <div className={`flex justify-between items-center ${config.elementSpacing}`}>
+      <div className={`mx-auto ${config.containerPadding}`}>
+        <div className={`flex justify-between items-center`}>
           {/* DiceSixFaces component */}
           <div className={`${config.diceSizeContainer} flex items-center justify-center`}>
             <div className={config.diceSize}>
@@ -137,4 +119,4 @@ const NavBarTop: React.FC = () => {
   );
 };
 
-export default NavBarTop;
+export default NavbarTop;
