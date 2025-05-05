@@ -1,9 +1,9 @@
 import { useGLTF } from "@react-three/drei";
 import * as THREE from "three";
-import { GroupProps} from "@react-three/fiber";
+import { GroupProps } from "@react-three/fiber";
 import { GLTF } from "three-stdlib";
-import { useRef } from "react";
-import buttonAboutGLB from '../../../../assets/buttonAbout.glb'
+import { useRef} from "react";
+import buttonHomeGLB from '../../assets/buttonHome.glb'
 
 interface ButtonGLTF extends GLTF {
   nodes: {
@@ -18,12 +18,12 @@ interface ButtonGLTF extends GLTF {
   }
 }
 
-interface Button3DAboutProps extends GroupProps {
+interface Button3DHomeProps extends GroupProps {
   onClick?: () => void;
 }
 
-const Button3DAbout = ({ onClick, ...props }: Button3DAboutProps) => {
-  const { nodes, materials } = useGLTF(buttonAboutGLB) as ButtonGLTF;
+const Button3DHome = ({ onClick, ...props }: Button3DHomeProps) => {
+  const { nodes, materials } = useGLTF(buttonHomeGLB) as ButtonGLTF;
   const groupRef = useRef<THREE.Group>(null);
 
   const handlePointerOver = () => {
@@ -72,6 +72,6 @@ const Button3DAbout = ({ onClick, ...props }: Button3DAboutProps) => {
   )
 }
 
-useGLTF.preload(buttonAboutGLB)
+useGLTF.preload(buttonHomeGLB)
 
-export default Button3DAbout
+export default Button3DHome
