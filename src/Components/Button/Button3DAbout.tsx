@@ -1,9 +1,9 @@
 import { useGLTF } from "@react-three/drei";
 import * as THREE from "three";
-import { GroupProps } from "@react-three/fiber";
+import { GroupProps} from "@react-three/fiber";
 import { GLTF } from "three-stdlib";
 import { useRef } from "react";
-import buttonContactGLB from '../../../../assets/buttonContact.glb'
+import buttonAboutGLB from '../../assets/buttonAbout.glb'
 
 interface ButtonGLTF extends GLTF {
   nodes: {
@@ -18,12 +18,12 @@ interface ButtonGLTF extends GLTF {
   }
 }
 
-interface Button3DContactProps extends GroupProps {
+interface Button3DAboutProps extends GroupProps {
   onClick?: () => void;
 }
 
-const Button3DContact = ({ onClick, ...props }: Button3DContactProps) => {
-  const { nodes, materials } = useGLTF(buttonContactGLB) as ButtonGLTF;
+const Button3DAbout = ({ onClick, ...props }: Button3DAboutProps) => {
+  const { nodes, materials } = useGLTF(buttonAboutGLB) as ButtonGLTF;
   const groupRef = useRef<THREE.Group>(null);
 
   const handlePointerOver = () => {
@@ -58,8 +58,8 @@ const Button3DContact = ({ onClick, ...props }: Button3DContactProps) => {
         receiveShadow
         geometry={nodes.Text.geometry}
         material={materials['Material.003']}
-        position={[-0.919, 0.038, 0.127]}
-        scale={0.574}
+        position={[-0.748, 0.032, 0.127]}
+        scale={0.601}
       />
       <mesh
         castShadow
@@ -72,6 +72,6 @@ const Button3DContact = ({ onClick, ...props }: Button3DContactProps) => {
   )
 }
 
-useGLTF.preload(buttonContactGLB)
+useGLTF.preload(buttonAboutGLB)
 
-export default Button3DContact
+export default Button3DAbout

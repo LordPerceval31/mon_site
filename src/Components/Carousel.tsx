@@ -2,8 +2,8 @@ import * as THREE from 'three';
 import { useRef, useState, createContext, useEffect } from 'react';
 import { useFrame } from '@react-three/fiber';
 import { Text } from '@react-three/drei';
-import { useResponsiveSize } from '../../../hooks/useResponsiveSize';
-import { useTheme } from '../../../hooks/useTheme';
+import useTheme from '../hooks/useTheme';
+import { useResponsiveSize } from '../hooks/useResponsiveSize';
 
 // Type pour les props du Carousel
 type CarouselProps = {
