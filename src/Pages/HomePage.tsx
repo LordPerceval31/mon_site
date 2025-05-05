@@ -3,11 +3,11 @@ import { useTheme } from "../hooks/useTheme";
 import { Canvas } from "@react-three/fiber";
 import { Suspense } from "react";
 import Loader from "../Components/Loader";
-import NavbarBottom from "../Components/common/ui/Navbar/NavbarBottom";
-import NavbarTop from "../Components/common/ui/Navbar/NavBarTop";
 import { Carousel } from "../Components/common/ui/Carousel";
 import { Rig } from "../Components/common/ui/rig";
 import { ScrollControls } from "@react-three/drei";
+import NavbarTop from "../Components/common/ui/Navbar/NavBarTop";
+import NavbarBottom from "../Components/common/ui/Navbar/NavbarBottom";
 
 const HomePage = () => {
   const { isDarkMode, colors } = useTheme();
