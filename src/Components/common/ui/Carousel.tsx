@@ -76,7 +76,7 @@ type SimpleCardProps = {
 };
 
 // Composant de carte simple
-function SimpleCard({ position, rotation, title, color, setHovered }: SimpleCardProps) {
+function SimpleCard({ position, rotation, title, setHovered }: SimpleCardProps) {
   const meshRef = useRef<THREE.Mesh>(null);
   const [hovered, setHover] = useState(false);
   const screenSize = useResponsiveSize();
@@ -120,7 +120,8 @@ function SimpleCard({ position, rotation, title, color, setHovered }: SimpleCard
   });
   
   // Choisir la couleur du texte en fonction du thème
-  const textColor = isDarkMode ? colors.text : colors.background;
+  const textColor = isDarkMode ? colors.primary : colors.secondary;
+  const backgroundColor = new THREE.Color(isDarkMode ? colors.background: colors.primary);
   
   return (
     <group position={position} rotation={rotation}>
@@ -130,7 +131,7 @@ function SimpleCard({ position, rotation, title, color, setHovered }: SimpleCard
         onPointerOut={handlePointerOut}
       >
         <boxGeometry args={cardDimensions} />
-        <meshStandardMaterial color={color} />
+        <meshBasicMaterial color={backgroundColor} />
       </mesh>
       
       <Text

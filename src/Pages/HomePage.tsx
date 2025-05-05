@@ -1,4 +1,3 @@
-
 import { useTheme } from "../hooks/useTheme";
 import { Canvas } from "@react-three/fiber";
 import { Suspense } from "react";
@@ -16,7 +15,7 @@ const HomePage = () => {
     <section
       className="h-screen w-full transition-colors duration-300"
       style={{
-        backgroundColor: isDarkMode ? colors.background : colors.background,
+        backgroundColor: isDarkMode ? colors.primary : colors.neutral,
         color: isDarkMode ? colors.primary : colors.neutral,
       }}
       data-cy="home-section"
@@ -31,10 +30,10 @@ const HomePage = () => {
           <ambientLight intensity={1} />
           <hemisphereLight groundColor="#b9d5ff" intensity={1} />
           <ScrollControls pages={4} infinite>
-  <Rig rotation={[0, 0, 0.15]}>
-    <Carousel radius={2} />
-  </Rig>
-</ScrollControls>
+            <Rig rotation={[0, 0, 0.15]}>
+              <Carousel radius={2} />
+            </Rig>
+          </ScrollControls>
         </Suspense>
       </Canvas>
 
