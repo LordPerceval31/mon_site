@@ -1,11 +1,11 @@
-
 import { useGLTF } from '@react-three/drei'
-import type { GLTF } from 'three-stdlib'
+import * as THREE from 'three'
 import { GroupProps } from '@react-three/fiber'
+import { GLTF } from 'three-stdlib'
+import { useRef, useState } from 'react'
 import buttonSettingsGLB from '../../../../assets/buttonSettings.glb'
 
-
-type GLTFResult = GLTF & {
+interface ButtonGLTF extends GLTF {
   nodes: {
     Circle: THREE.Mesh
     Text: THREE.Mesh
@@ -18,14 +18,38 @@ type GLTFResult = GLTF & {
   }
 }
 
-interface Button3DSettingsProps extends GroupProps {}
+interface Button3DSettingsProps extends GroupProps {
+  onClick?: () => void;
+}
 
+const Button3DSettings = ({ onClick, ...props }: Button3DSettingsProps) => {
+  const { nodes, materials } = useGLTF(buttonSettingsGLB) as ButtonGLTF;
+  const groupRef = useRef<THREE.Group>(null);
+  const [isHovered, setIsHovered] = useState(false);
 
-const  Button3DSettings = (props: Button3DSettingsProps) => {
-  const { nodes, materials } = useGLTF(buttonSettingsGLB) as GLTFResult
-  
+  const handlePointerOver = () => {
+    setIsHovered(true);
+    document.body.style.cursor = 'pointer';
+  };
+
+  const handlePointerOut = () => {
+    setIsHovered(false);
+    document.body.style.cursor = 'default';
+  };
+
+  const handleClick = () => {
+    if (onClick) onClick();
+  };
+
   return (
-    <group {...props} dispose={null}>
+    <group 
+      ref={groupRef}
+      {...props} 
+      dispose={null}
+      onPointerOver={handlePointerOver}
+      onPointerOut={handlePointerOut}
+      onClick={handleClick}
+    >
       <mesh
         castShadow
         receiveShadow
