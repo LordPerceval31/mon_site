@@ -1,5 +1,5 @@
 import React from "react";
-import { useResponsiveSize } from "../../../../hooks/useResponsiveSize";
+import { useResponsiveSize } from "../../hooks/useResponsiveSize";
 import { Canvas } from "@react-three/fiber";
 import { GroupProps } from "@react-three/fiber";
 import Button3DAbout from "../Button/Button3DAbout";
@@ -7,8 +7,8 @@ import Button3DHome from "../Button/Button3DHome";
 import Button3DProjects from "../Button/Button3DProjects";
 import Button3DContact from "../Button/Button3DContact";
 import Button3DSettings from "../Button/Button3DSettings";
-import DynamicMouseLight from "../../../DynamiqueMouseLight";
-import DynamicButton3D from "../../../DynamiqueButton3D";
+import DynamicMouseLight from "../DynamiqueMouseLight";
+import DynamicButton3D from "../DynamiqueButton3D";
 
 interface NavbarBottomConfig {
   containerPadding: string;

@@ -1,8 +1,8 @@
 import React from "react";
-import DiceSixFaces from "../../../DiceSixFaces";
+import DiceSixFaces from "../DiceSixFaces";
 import logoImage from "../../../../assets/logo.webp";
 import DarkModeThemeToggle from "../Button/DarkModThemeToggle";
-import { useResponsiveSize } from "../../../../hooks/useResponsiveSize";
+import { useResponsiveSize } from "../../hooks/useResponsiveSize";
 
 interface NavbarTopConfig {
   containerPadding: string;
