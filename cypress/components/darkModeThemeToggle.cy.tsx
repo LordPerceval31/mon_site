@@ -1,4 +1,4 @@
-import DarkModeThemeToggle from '../../src/Components/common/ui/Button/DarkModThemeToggle';
+import DarkModeThemeToggle from '../../src/components/common/ui/Button/DarkModThemeToggle';
 import { ThemeProvider } from '../../src/contexts/themeContext';
 import '../../src/index.css';
 
