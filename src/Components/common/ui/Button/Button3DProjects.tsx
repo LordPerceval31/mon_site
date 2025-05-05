@@ -2,7 +2,7 @@ import { useGLTF } from '@react-three/drei'
 import * as THREE from 'three'
 import { GroupProps } from '@react-three/fiber'
 import { GLTF } from 'three-stdlib'
-import { useRef, useState } from 'react'
+import { useRef } from 'react'
 import buttonProjectsGLB from '../../../../assets/buttonProjects.glb'
 
 interface ButtonGLTF extends GLTF {
@@ -25,15 +25,12 @@ interface Button3DProjectsProps extends GroupProps {
 const Button3DProjects = ({ onClick, ...props }: Button3DProjectsProps) => {
   const { nodes, materials } = useGLTF(buttonProjectsGLB) as ButtonGLTF;
   const groupRef = useRef<THREE.Group>(null);
-  const [isHovered, setIsHovered] = useState(false);
 
   const handlePointerOver = () => {
-    setIsHovered(true);
     document.body.style.cursor = 'pointer';
   };
 
   const handlePointerOut = () => {
-    setIsHovered(false);
     document.body.style.cursor = 'default';
   };
 
