@@ -2,7 +2,12 @@ name: Cypress Tests
 
 on:
   push:
-    branches: [ main, master ]
+    paths:
+      - 'src/**'      # Déclenche sur les modifications du code source
+      - 'public/**'   # Déclenche sur les modifications des assets publics
+      - 'cypress/**'  # Déclenche sur les modifications des tests
+      - 'package.json'
+      - 'cypress.config.js'
   pull_request:
     branches: [ main, master ]
 

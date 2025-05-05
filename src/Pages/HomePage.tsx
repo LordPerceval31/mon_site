@@ -5,8 +5,8 @@ import Loader from "../Components/Loader";
 import { Carousel } from "../Components/common/ui/Carousel";
 import { Rig } from "../Components/common/ui/rig";
 import { ScrollControls } from "@react-three/drei";
-import NavbarTop from "../Components/common/ui/Navbar/NavBarTop";
 import NavbarBottom from "../Components/common/ui/Navbar/NavbarBottom";
+import NavbarTop from "../Components/common/ui/Navbar/NavbarTop";
 
 const HomePage = () => {
   const { isDarkMode, colors } = useTheme();
@@ -15,8 +15,7 @@ const HomePage = () => {
     <section
       className="h-screen w-full transition-colors duration-300"
       style={{
-        backgroundColor: isDarkMode ? colors.primary : colors.neutral,
-        color: isDarkMode ? colors.primary : colors.neutral,
+        backgroundColor: isDarkMode ? colors.background : colors.primary,
       }}
       data-cy="home-section"
     >
