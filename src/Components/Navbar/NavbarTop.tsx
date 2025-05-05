@@ -1,6 +1,6 @@
 import React from "react";
 import DiceSixFaces from "../DiceSixFaces";
-import logoImage from "../../../../assets/logo.webp";
+import logoImage from "../../assets/logo.webp";
 import DarkModeThemeToggle from "../Button/DarkModThemeToggle";
 import { useResponsiveSize } from "../../hooks/useResponsiveSize";
 
