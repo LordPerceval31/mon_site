@@ -4,6 +4,7 @@ import { Canvas } from "@react-three/fiber";
 import DynamicMouseLight from "../DynamiqueMouseLight";
 import DynamicButton3D from "../DynamiqueButton3D";
 import Button3DNavigate from "../Button/Button3DNavigate";
+import useTheme from "../../hooks/useTheme";
 
 interface NavbarBottomConfig {
   containerPadding: string;
@@ -12,18 +13,14 @@ interface NavbarBottomConfig {
 }
 
 interface ButtonConfig {
-  type: "home" | "about" | "projects" | "contact" | "settings";
+  type:  "about" | "projects" | "contact" | "settings";
   dataCy: string;
   onClick: () => void;
 }
 
 // Tableau de configuration pour les boutons
 const buttonConfigs: ButtonConfig[] = [
-  {
-    type: "home",
-    dataCy: "home-button",
-    onClick: () => console.log("Navigating to Home")
-  },
+
   {
     type: "about",
     dataCy: "about-button",
@@ -49,6 +46,10 @@ const buttonConfigs: ButtonConfig[] = [
 const NavbarBottom: React.FC = () => {
   const screenSize = useResponsiveSize();
   const config = getNavbarBottonConfig(screenSize);
+   const { colors, isDarkMode } = useTheme();
+
+  const cardColor = isDarkMode ? colors.secondary : colors.secondary;
+  const textColor = isDarkMode ? colors.primary: colors.primary;
 
   return (
     <nav
@@ -66,7 +67,7 @@ const NavbarBottom: React.FC = () => {
               data-cy={buttonConfig.dataCy}
             >
               <Canvas>
-                <ambientLight intensity={0.5} />
+                <ambientLight intensity={0.1} />
                 <DynamicMouseLight 
                   intensity={1.5} 
                   influenceRadius={200} 
@@ -77,11 +78,12 @@ const NavbarBottom: React.FC = () => {
                   influenceRadius={150}  
                   resetRadius={300}   
                   rotationIntensity={{ x: 1.5, y: 1.5, z: 1.2 }}
-                  autoRotate={true}
                   autoRotateSpeed={0.002}
                   resetSpeed={0.08}
                 >
                   <Button3DNavigate
+                color={cardColor}
+                textColor={textColor}
                     type={buttonConfig.type}
                     onClick={buttonConfig.onClick}
                   />
@@ -104,7 +106,7 @@ const getNavbarBottonConfig = (screenSize: string): NavbarBottomConfig => {
         NavbarBottomContainer: "h-20 w-[20rem]",
         ButtonContainer: "w-16 h-16",
       };
-    case "tablette":
+    case "tablet":
       return {
         containerPadding: "px-0",
         NavbarBottomContainer: "h-20 w-[32rem]",

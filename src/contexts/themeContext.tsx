@@ -1,16 +1,9 @@
 
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { ThemeMode, ColorBlindnessType, getThemeColors} from '../themes/theme';
-import { ThemeColors } from '../types/themeInterfaces';
+import { ThemeColors, ThemeContextProps } from '../types/themeInterfaces';
 
-interface ThemeContextProps {
-  mode: ThemeMode;
-  colorBlindnessType: ColorBlindnessType;
-  colors: ThemeColors;
-  setMode: (mode: ThemeMode) => void;
-  setColorBlindnessType: (type: ColorBlindnessType) => void;
-  toggleMode: () => void;
-}
+
 
 const defaultContext: ThemeContextProps = {
   mode: 'light',

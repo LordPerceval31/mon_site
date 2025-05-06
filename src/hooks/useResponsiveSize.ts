@@ -1,7 +1,7 @@
 // hooks/useResponsiveSize.ts
 import { useEffect, useState } from 'react';
 
-type ScreenSize = 'mobile' | 'tablette' | 'laptop' | 'desktop' | '2K' | 'ultrawide' | '4k' ;
+type ScreenSize = 'mobile' | 'tablet' | 'laptop' | 'desktop' | '2K' | 'ultrawide' | '4k' ;
 
 export const useResponsiveSize = (): ScreenSize => {
   const [screenSize, setScreenSize] = useState<ScreenSize>('laptop'); 
@@ -12,7 +12,7 @@ export const useResponsiveSize = (): ScreenSize => {
       if (width < 420) {
         setScreenSize('mobile');
       } else if (width < 768) {
-        setScreenSize('tablette');
+        setScreenSize('tablet');
       } else if (width < 1366) {
         setScreenSize('laptop');
       } else if (width < 1920) {
