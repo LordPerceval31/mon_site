@@ -1,8 +1,17 @@
-import React, { createContext, useState, useEffect, ReactNode } from 'react';
-import { ColorBlindnessType, ThemeColors, ThemeContextProps, ThemeMode } from '../types/themeInterfaces';
-import { getThemeColors } from '../themes/theme';
 
-// Le contexte utilise l'interface définie
+import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import { ThemeMode, ColorBlindnessType, getThemeColors} from '../themes/theme';
+import { ThemeColors } from '../types/themeInterfaces';
+
+interface ThemeContextProps {
+  mode: ThemeMode;
+  colorBlindnessType: ColorBlindnessType;
+  colors: ThemeColors;
+  setMode: (mode: ThemeMode) => void;
+  setColorBlindnessType: (type: ColorBlindnessType) => void;
+  toggleMode: () => void;
+}
+
 const defaultContext: ThemeContextProps = {
   mode: 'light',
   colorBlindnessType: 'normal',
@@ -12,14 +21,12 @@ const defaultContext: ThemeContextProps = {
   toggleMode: () => {}
 };
 
-// Export le contexte directement (à utiliser ensuite dans useTheme.ts)
-export const ThemeContext = createContext<ThemeContextProps>(defaultContext);
+const ThemeContext = createContext<ThemeContextProps>(defaultContext);
 
 interface ThemeProviderProps {
   children: ReactNode;
 }
 
-// Exportez uniquement le ThemeProvider
 export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
   // Récupérer les préférences de l'utilisateur du localStorage ou utiliser les valeurs par défaut
   const [mode, setMode] = useState<ThemeMode>(() => {
@@ -84,4 +91,15 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
       {children}
     </ThemeContext.Provider>
   );
+};
+
+// Hook personnalisé pour utiliser le contexte de thème
+export const useTheme = (): ThemeContextProps => {
+  const context = useContext(ThemeContext);
+  
+  if (!context) {
+    throw new Error('useTheme must be used within a ThemeProvider');
+  }
+  
+  return context;
 };

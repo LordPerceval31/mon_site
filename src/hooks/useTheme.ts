@@ -1,14 +1,27 @@
-import { useContext } from 'react';
-import { ThemeContext } from '../contexts/ThemeContext';
-import { ThemeColors, UseThemeHookResult } from '../types/themeInterfaces';
+import { useTheme as useThemeContext } from "../contexts/themeContext";
+import {  ThemeMode, ColorBlindnessType } from "../themes/theme";
+import { ThemeColors } from "../types/themeInterfaces";
 
-// Utilisation de l'interface UseThemeHookResult définie
+// Renommer cette interface pour éviter toute confusion
+interface UseThemeHookResult {
+  // États actuels
+  mode: ThemeMode;
+  colorBlindnessType: ColorBlindnessType;
+  colors: ThemeColors;
+  isDarkMode: boolean;
+
+  // Méthodes pour changer le thème
+  toggleMode: () => void;
+  setMode: (mode: ThemeMode) => void;
+  setColorBlindnessType: (type: ColorBlindnessType) => void;
+
+  // Méthode utilitaire pour obtenir la valeur d'une couleur spécifique
+  getColor: (colorName: keyof ThemeColors) => string;
+}
+
+// Ce hook étend les fonctionnalités du hook de base du context
 export const useTheme = (): UseThemeHookResult => {
-  const context = useContext(ThemeContext);
-  
-  if (!context) {
-    throw new Error('useTheme must be used within a ThemeProvider');
-  }
+  const context = useThemeContext();
 
   // Ajouter un calcul pour savoir si c'est le mode sombre
   const isDarkMode = context.mode === "dark";
