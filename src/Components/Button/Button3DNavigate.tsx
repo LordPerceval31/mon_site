@@ -6,11 +6,11 @@ import { GLTF } from "three-stdlib";
 import { useRef, useEffect } from "react";
 
 // Import all button GLB files
-import buttonHomeGLB from '../../assets/ButtonHome.glb';
-import buttonAboutGLB from '../../assets/ButtonAbout.glb';
-import buttonProjectsGLB from '../../assets/ButtonProjects.glb';
-import buttonContactGLB from '../../assets/ButtonContact.glb';
-import buttonSettingsGLB from '../../assets/ButtonSettings.glb';
+import buttonHomeGLB from '../../assets/buttonHome.glb';
+import buttonAboutGLB from '../../assets/buttonAbout.glb';
+import buttonProjectsGLB from '../../assets/buttonProjects.glb';
+import buttonContactGLB from '../../assets/buttonContact.glb';
+import buttonSettingsGLB from '../../assets/buttonSettings.glb';
 
 // Define type for the button variants
 export type ButtonType = 'home' | 'about' | 'projects' | 'contact' | 'settings';
