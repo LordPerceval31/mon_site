@@ -1,6 +1,7 @@
 
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
-import { ThemeMode, ColorBlindnessType, getThemeColors, ThemeColors } from '../themes/theme';
+import { ThemeMode, ColorBlindnessType, getThemeColors} from '../themes/theme';
+import { ThemeColors } from '../types/themeInterfaces';
 
 interface ThemeContextProps {
   mode: ThemeMode;

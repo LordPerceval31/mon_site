@@ -1,5 +1,4 @@
-// src/utils/themeStorage.ts
-import { ThemeMode, ColorBlindnessType } from '../themes/theme';
+import { ColorBlindnessType, ThemeMode } from "../types/themeInterfaces";
 
 export const THEME_MODE_KEY = 'themeMode';
 export const COLOR_BLINDNESS_TYPE_KEY = 'colorBlindnessType';

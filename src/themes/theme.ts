@@ -1,22 +1,8 @@
+import { Theme, ThemeColors } from "../types/themeInterfaces";
+
 // src/themes/theme.ts
 export type ThemeMode = 'light' | 'dark';
 export type ColorBlindnessType = 'normal' | 'deuteranopia' | 'protanopia' | 'tritanopia';
-
-export interface ThemeColors {
-  primary: string;
-  secondary: string;
-  accent: string;
-  neutral: string;
-  background: string;
-  text: string;
-  textTwo: string;
-}
-
-export interface Theme {
-  [key: string]: {
-    [key in ThemeMode]: ThemeColors;
-  };
-}
 
 // Utilisation du thème existant depuis le fichier importé
 export const themeColors: Theme = {

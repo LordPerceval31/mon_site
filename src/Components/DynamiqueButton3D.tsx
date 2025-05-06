@@ -1,22 +1,7 @@
 import React, { useRef, useEffect } from 'react';
 import { useFrame, useThree } from '@react-three/fiber';
 import * as THREE from 'three';
-import { GroupProps } from '@react-three/fiber';
-
-interface DynamicButton3DProps extends GroupProps {
-  children: React.ReactNode;
-  baseRotation?: [number, number, number];
-  influenceRadius?: number;
-  resetRadius?: number;
-  rotationIntensity?: {
-    x: number;
-    y: number;
-    z: number;
-  };
-  autoRotate?: boolean;
-  autoRotateSpeed?: number;
-  resetSpeed?: number;
-}
+import { DynamicButton3DProps } from '../types/dynamicComponentsInterfaces';
 
 const DynamicButton3D: React.FC<DynamicButton3DProps> = ({
   children,
