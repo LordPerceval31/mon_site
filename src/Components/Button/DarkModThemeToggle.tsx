@@ -1,18 +1,7 @@
 import { useTheme } from '../../hooks/useTheme';
 
-interface ThemeContextType {
-  isDarkMode: boolean;
-  toggleMode: () => void;
-  colors: {
-    primary: string;
-    secondary: string;
-    background: string;
-    neutral: string;
-  };
-}
-
 const DarkModeThemeToggle = () => {
-  const { isDarkMode, toggleMode, colors } = useTheme() as ThemeContextType;
+  const { isDarkMode, toggleMode, colors } = useTheme();
   
   // Determine appropriate colors based on current theme
   const buttonBgColor = isDarkMode ? colors.primary : colors.neutral;

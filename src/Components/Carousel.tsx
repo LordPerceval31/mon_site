@@ -1,9 +1,10 @@
 import * as THREE from 'three';
-import { useRef, useState, createContext, useEffect } from 'react';
+import { useRef, useState, createContext } from 'react';
 import { useFrame } from '@react-three/fiber';
 import { Text } from '@react-three/drei';
 import useTheme from '../hooks/useTheme';
 import { useResponsiveSize } from '../hooks/useResponsiveSize';
+import CardTest from './Card';
 
 // Type pour les props du Carousel
 type CarouselProps = {
@@ -29,7 +30,11 @@ const cardTypes = [
 export function Carousel({ radius = 2 }: CarouselProps) {
   const groupRef = useRef<THREE.Group>(null);
   const [isAnyCardHovered, setIsAnyCardHovered] = useState(false);
-  const { colors } = useTheme();
+  const { colors, isDarkMode } = useTheme();
+  const screenSize = useResponsiveSize();
+  
+  // Déterminer si nous sommes sur mobile ou tablette
+  const isMobileOrTablet = screenSize === 'mobile' || screenSize === 'tablette';
   
   // Arrête la rotation quand une carte est survolée
   useFrame((_, delta) => {
@@ -37,6 +42,9 @@ export function Carousel({ radius = 2 }: CarouselProps) {
       groupRef.current.rotation.y += delta * 0.2;
     }
   });
+  
+  // Déterminer la couleur du texte en fonction du thème
+  const textColor = isDarkMode ? colors.background : colors.secondary;
   
   return (
     <CarouselContext.Provider value={{ setHovered: setIsAnyCardHovered }}>
@@ -47,103 +55,48 @@ export function Carousel({ radius = 2 }: CarouselProps) {
           const x = Math.sin(angle) * radius;
           const z = Math.cos(angle) * radius;
           
-          // Obtenir la couleur du thème pour cette carte
+          // Obtenir la couleur du thème pour les cartes
           const cardColor = colors[card.colorKey as keyof typeof colors];
           
+          // Rotation pour la carte
+          const cardRotation: [number, number, number] = isMobileOrTablet
+            ? [ Math.PI/2, 0, Math.PI/2] // Rotation pour mode portrait
+            : [0, Math.PI/2, 0];        // Rotation pour mode paysage
+          
+          // Position du texte ajustée selon l'orientation
+          const textPosition: [number, number, number] = isMobileOrTablet
+            ? [0, 0, 0.010] // Position pour mode portrait
+            : [0, 0, 0.010]; // Position pour mode paysage
+          
           return (
-            <SimpleCard
+            <group 
               key={i}
-              position={[x, 0, z]}
+              position={[x, 0, z]} 
               rotation={[0, Math.PI + angle, 0]}
-              title={card.title}
-              color={cardColor}
-              setHovered={setIsAnyCardHovered}
-            />
+              onPointerOver={() => setIsAnyCardHovered(true)}
+              onPointerOut={() => setIsAnyCardHovered(false)}
+            >
+              <group rotation={cardRotation}>
+                <CardTest color={cardColor} />
+              </group>
+              <group 
+                position={[0, 0.1, 0]} 
+                rotation={[0, Math.PI, 0]}
+              >
+                <Text
+                  position={textPosition}
+                  fontSize={0.2}
+                  color={textColor}
+                  anchorX="center"
+                  anchorY="middle"
+                >
+                  {card.title}
+                </Text>
+              </group>
+            </group>
           );
         })}
       </group>
     </CarouselContext.Provider>
-  );
-}
-
-// Type pour les props de la carte
-type SimpleCardProps = {
-  position: [number, number, number];
-  rotation: [number, number, number];
-  title: string;
-  color: string;
-  setHovered: (isHovered: boolean) => void;
-};
-
-// Composant de carte simple
-function SimpleCard({ position, rotation, title, setHovered }: SimpleCardProps) {
-  const meshRef = useRef<THREE.Mesh>(null);
-  const [hovered, setHover] = useState(false);
-  const screenSize = useResponsiveSize();
-  const [cardDimensions, setCardDimensions] = useState<[number, number, number]>([1.2, 1.8, 0.1]);
-  const { isDarkMode, colors } = useTheme();
-  
-  // Ajuster les dimensions de la carte en fonction de la taille de l'écran
-  useEffect(() => {
-    if (screenSize === 'mobile' || screenSize === 'tablette') {
-      setCardDimensions([1.2, 1.8, 0.1]);
-    } else {
-      setCardDimensions([1.8, 1.2, 0.1]);
-    }
-  }, [screenSize]);
-  
-  // Gestion du survol
-  const handlePointerOver = () => {
-    setHover(true);
-    setHovered(true);
-  };
-  
-  const handlePointerOut = () => {
-    setHover(false);
-    setHovered(false);
-  };
-  
-  // Animation de l'échelle au survol
-  useFrame((_, delta) => {
-    if (meshRef.current) {
-      const lerpFactor = Math.min(0.1 * (60 * delta), 1);
-      
-      meshRef.current.scale.lerp(
-        new THREE.Vector3(
-          hovered ? 1.15 : 1, 
-          hovered ? 1.15 : 1, 
-          hovered ? 1.15 : 1
-        ), 
-        lerpFactor
-      );
-    }
-  });
-  
-  // Choisir la couleur du texte en fonction du thème
-  const textColor = isDarkMode ? colors.primary : colors.secondary;
-  const backgroundColor = new THREE.Color(isDarkMode ? colors.background: colors.primary);
-  
-  return (
-    <group position={position} rotation={rotation}>
-      <mesh 
-        ref={meshRef}
-        onPointerOver={handlePointerOver}
-        onPointerOut={handlePointerOut}
-      >
-        <boxGeometry args={cardDimensions} />
-        <meshBasicMaterial color={backgroundColor} />
-      </mesh>
-      
-      <Text
-        position={[0, 0, -0.06]}
-        fontSize={0.2}
-        color={textColor}
-        anchorX="center"
-        anchorY="middle"
-        rotation={[0, Math.PI, 0]}
-      >
-        {title}
-      </Text>
-    </group>
   );
 }
