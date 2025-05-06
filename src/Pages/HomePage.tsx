@@ -5,7 +5,7 @@ import Loader from "../Components/Loader";
 import NavbarTop from "../Components/Navbar/NavbarTop";
 import { Carousel } from "../Components/Carousel";
 import NavbarBottom from "../Components/Navbar/NavbarBottom";
-import { CarouselController } from "../Components/carrouselController";
+import { CarouselController } from "../Components/CarrouselController";
 
 
 const HomePage = () => {

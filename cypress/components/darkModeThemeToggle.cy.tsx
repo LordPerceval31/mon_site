@@ -1,5 +1,5 @@
 import DarkModeThemeToggle from '../../src/Components/Button/DarkModThemeToggle';
-import { ThemeProvider } from '../../src/contexts/themeContext';
+import { ThemeProvider } from '../../src/contexts/ThemeContext';
 import '../../src/index.css';
 
 describe('Fonctionnalité de mode sombre', () => {
