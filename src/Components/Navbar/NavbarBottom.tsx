@@ -106,7 +106,7 @@ const getNavbarBottonConfig = (screenSize: string): NavbarBottomConfig => {
         NavbarBottomContainer: "h-20 w-[20rem]",
         ButtonContainer: "w-16 h-16",
       };
-    case "tablette":
+    case "tablet":
       return {
         containerPadding: "px-0",
         NavbarBottomContainer: "h-20 w-[32rem]",

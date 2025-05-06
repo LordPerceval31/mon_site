@@ -6,7 +6,7 @@ import { GLTF } from "three-stdlib";
 import { useRef, useEffect } from "react";
 
 // Import all button GLB files
-import buttonHomeGLB from '../../assets/ButtonTest.glb';
+import buttonHomeGLB from '../../assets/ButtonHome.glb';
 import buttonAboutGLB from '../../assets/ButtonAbout.glb';
 import buttonProjectsGLB from '../../assets/ButtonProjects.glb';
 import buttonContactGLB from '../../assets/ButtonContact.glb';
