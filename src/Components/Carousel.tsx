@@ -28,7 +28,7 @@ export const Carousel = ({
   const screenSize = useResponsiveSize();
   
   // Détermine si nous sommes sur mobile ou tablette
-  const isMobileOrTablet = screenSize === 'mobile' || screenSize === 'tablette';
+  const isMobileOrTablet = screenSize === 'mobile' || screenSize === 'tablet';
   
   // Utilise les couleurs par défaut du thème si aucune n'est spécifiée
   const defaultCardColor = isDarkMode ? colors.primary : colors.neutral;

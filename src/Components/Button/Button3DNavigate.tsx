@@ -1,33 +1,21 @@
-// src/Components/Button/Button3D.tsx
+// src/Components/Button/Button3DNavigate.tsx
 import { useGLTF } from "@react-three/drei";
 import * as THREE from "three";
 import { GroupProps } from "@react-three/fiber";
 import { GLTF } from "three-stdlib";
-import { useRef } from "react";
+import { useRef, useEffect } from "react";
 
-// Importez correctement tous les fichiers GLB
-import buttonHomeGLB from '../../assets/buttonHome.glb';
-import buttonAboutGLB from '../../assets/buttonAbout.glb';
-import buttonProjectsGLB from '../../assets/buttonProjects.glb';
-import buttonContactGLB from '../../assets/buttonContact.glb';
-import buttonSettingsGLB from '../../assets/buttonSettings.glb';
+// Import all button GLB files
+import buttonHomeGLB from '../../assets/ButtonTest.glb';
+import buttonAboutGLB from '../../assets/ButtonAbout.glb';
+import buttonProjectsGLB from '../../assets/ButtonProjects.glb';
+import buttonContactGLB from '../../assets/ButtonContact.glb';
+import buttonSettingsGLB from '../../assets/ButtonSettings.glb';
 
-interface ButtonGLTF extends GLTF {
-  nodes: {
-    Circle: THREE.Mesh
-    Text: THREE.Mesh
-    Sphere: THREE.Mesh
-  }
-  materials: {
-    'Material.001': THREE.Material
-    'Material.002': THREE.Material
-    'Material.003': THREE.Material
-  }
-}
-
+// Define type for the button variants
 export type ButtonType = 'home' | 'about' | 'projects' | 'contact' | 'settings';
 
-// Mappez chaque type à son fichier GLB correspondant
+// Map each button type to its GLB file
 const buttonGLBMap = {
   home: buttonHomeGLB,
   about: buttonAboutGLB,
@@ -36,41 +24,79 @@ const buttonGLBMap = {
   settings: buttonSettingsGLB
 };
 
-// Configuration des positions et échelles pour chaque type
-const buttonConfigMap = {
-  home: {
-    textPosition: [-0.748, 0.032, 0.127] as [number, number, number],
-    textScale: 0.601
-  },
-  about: {
-    textPosition: [-0.748, 0.032, 0.127] as [number, number, number],
-    textScale: 0.601
-  },
-  projects: {
-    textPosition: [-0.921, 0.038, 0.12] as [number, number, number],
-    textScale: 0.549
-  },
-  contact: {
-    textPosition: [-0.919, 0.038, 0.127] as [number, number, number],
-    textScale: 0.574
-  },
-  settings: {
-    textPosition: [-0.907, 0.038, 0.112] as [number, number, number],
-    textScale: 0.544
-  }
+// Type for the GLB model structure
+type GLTFResult = GLTF & {
+  nodes: {
+    Circle: THREE.Mesh;
+    Text: THREE.Mesh;
+    Sphere: THREE.Mesh;
+  };
+  materials: {
+    'Material.001': THREE.MeshStandardMaterial;
+    'Material.002': THREE.MeshStandardMaterial;
+    'Material.003': THREE.MeshStandardMaterial;
+  };
 };
 
-interface Button3DProps extends GroupProps {
+// Component props interface
+interface Button3DNavigateProps extends GroupProps {
   type: ButtonType;
+  color?: THREE.ColorRepresentation;
+  textColor?: THREE.ColorRepresentation;
   onClick?: () => void;
 }
 
-const Button3DNavigate = ({ type, onClick, ...props }: Button3DProps) => {
+// Configuration des positions et échelles pour chaque type
+const buttonConfigMap = {
+  home: {
+    textPosition: [-0.788, 0.032, 0.127] as [number, number, number],
+    textScale: 1
+  },
+  about: {
+    textPosition: [-0.748, 0.032, 0.127] as [number, number, number],
+    textScale: 0.9
+  },
+  projects: {
+    textPosition: [-0.9, 0.038, 0.12] as [number, number, number],
+    textScale: 0.8
+  },
+  contact: {
+    textPosition: [-0.850, 0.038, 0.127] as [number, number, number],
+    textScale: 0.8
+  },
+  settings: {
+    textPosition: [-0.907, 0.038, 0.112] as [number, number, number],
+    textScale: 0.8
+  }
+};
+
+const Button3DNavigate = ({ 
+  type,
+  color = 'blue', 
+  textColor = 'white', 
+  onClick, 
+  ...props 
+}: Button3DNavigateProps) => {
+  // Get the correct GLB path based on button type
   const glbPath = buttonGLBMap[type];
   const config = buttonConfigMap[type];
-  const { nodes, materials } = useGLTF(glbPath) as ButtonGLTF;
+  
+  // Load the GLB model
+  const { nodes, materials } = useGLTF(glbPath) as GLTFResult;
   const groupRef = useRef<THREE.Group>(null);
 
+  // Update material colors when props change
+  useEffect(() => {
+    if (materials['Material.002']) {
+      materials['Material.002'].color = new THREE.Color(color);
+    }
+    
+    if (materials['Material.003']) {
+      materials['Material.003'].color = new THREE.Color(textColor);
+    }
+  }, [color, textColor, materials]);
+  
+  // Event handlers for interactivity
   const handlePointerOver = () => {
     document.body.style.cursor = 'pointer';
   };
@@ -96,7 +122,7 @@ const Button3DNavigate = ({ type, onClick, ...props }: Button3DProps) => {
         castShadow
         receiveShadow
         geometry={nodes.Circle.geometry}
-        material={materials['Material.001']}
+        material={materials['Material.002']}
       />
       <mesh
         castShadow
@@ -110,16 +136,18 @@ const Button3DNavigate = ({ type, onClick, ...props }: Button3DProps) => {
         castShadow
         receiveShadow
         geometry={nodes.Sphere.geometry}
-        material={materials['Material.002']}
-        scale={[1, 0.5, 1]}
+        material={materials['Material.001']}
+        scale={[1.015, 0.5, 1.015]}
       />
     </group>
-  )
-}
+  );
+};
 
-// Préchargement des modèles
+// Preload all button models for better performance
 Object.values(buttonGLBMap).forEach(glbPath => {
   useGLTF.preload(glbPath);
 });
 
 export default Button3DNavigate;
+
+
