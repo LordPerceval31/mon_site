@@ -148,7 +148,7 @@ export const Carousel = ({
       defaultZ.current = camera.position.z;
     }
     
-    // Smooth zoom transition when hovering
+    // Smooth zoom transition when hovering !
     camera.position.z = THREE.MathUtils.lerp(
       camera.position.z, 
       isHovering ? defaultZ.current * zoomFactor : defaultZ.current, 
