@@ -1,7 +1,7 @@
 
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
-import { ThemeMode, ColorBlindnessType, getThemeColors} from '../themes/theme';
 import { ThemeColors, ThemeContextProps } from '../types/themeInterfaces';
+import { ColorBlindnessType, getThemeColors, ThemeMode } from '../themes/themeColor';
 
 
 

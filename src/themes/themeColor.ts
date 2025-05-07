@@ -17,10 +17,10 @@ export const themeColors: Theme = {
       textTwo: "#F5F5F5",
     },
     dark: {
-      primary: "#FFFCF2",
+      primary: "#F7EED4",
       secondary: "#EB5E28",
       accent: "#CCC5B9",
-      neutral: "#FFFCF2",
+      neutral: "#F7EED4",
       background: "#252422",
       text: "#F5F5F5",
       textTwo: "#121212",
