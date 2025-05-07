@@ -1,18 +1,11 @@
 import { Theme, ThemeColors } from "../types/themeInterfaces";
 
+// src/themes/theme.ts
 export type ThemeMode = 'light' | 'dark';
-
-/**
- * Supported color blindness adaptation types
- */
 export type ColorBlindnessType = 'normal' | 'deuteranopia' | 'protanopia' | 'tritanopia';
 
-/**
- * Theme color definitions with accessibility variations
- * Organized by color blindness type and theme mode
- */
+// Utilisation du thème existant depuis le fichier importé
 export const themeColors: Theme = {
-  // Standard color palette
   normal: {
     light: {
       primary: "#FFFCF2",
@@ -33,7 +26,6 @@ export const themeColors: Theme = {
       textTwo: "#121212",
     }
   },
-  // Deuteranopia (red-green color blindness) adaptation
   deuteranopia: {
     light: {
       primary: "#FFFCF2",
@@ -54,7 +46,6 @@ export const themeColors: Theme = {
       textTwo: "#121212",
     }
   },
-  // Protanopia (red-green color blindness) adaptation
   protanopia: {
     light: {
       primary: "#FFFCF2",
@@ -75,7 +66,6 @@ export const themeColors: Theme = {
       textTwo: "#121212",
     }
   },
-  // Tritanopia (blue-yellow color blindness) adaptation
   tritanopia: {
     light: {
       primary: "#FFFCF2",
@@ -98,12 +88,7 @@ export const themeColors: Theme = {
   }
 };
 
-/**
- * Get theme colors based on color blindness type and theme mode
- * @param colorBlindness - Type of color blindness adaptation
- * @param mode - Light or dark theme mode
- * @returns Theme color object with all color values
- */
+// Fonction pour obtenir les couleurs du thème
 export const getThemeColors = (
   colorBlindness: ColorBlindnessType = 'normal',
   mode: ThemeMode = 'light'

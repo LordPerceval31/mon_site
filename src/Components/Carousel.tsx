@@ -1,3 +1,4 @@
+// src/Components/Carousel.tsx
 import * as THREE from 'three';
 import { useEffect, useRef, useState } from 'react';
 import { useFrame, useThree } from '@react-three/fiber';
@@ -167,6 +168,7 @@ export const Carousel = ({
         setIsHovering(false);
         document.body.style.cursor = 'default';
       }}
+
     >
       {cardItems.map((title, i) => {
         // Calculate position on the circle

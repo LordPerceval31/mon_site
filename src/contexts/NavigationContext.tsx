@@ -1,14 +1,8 @@
 import React, { createContext, useContext, useState, ReactNode, useCallback, useEffect, useRef } from 'react';
 
-/**
- * Available card types in the carousel navigation
- * Must match exactly the titles displayed in the carousel
- */
+// Types de cartes disponibles (correspondant exactement aux titres dans le carousel)
 export type CarouselCardType = 'About' | 'Projects' | 'Contact' | 'Settings';
 
-/**
- * Navigation context interface defining all available methods and state
- */
 interface NavigationContextType {
   currentCard: CarouselCardType | null;
   setCurrentCard: (card: CarouselCardType | null) => void;
@@ -19,7 +13,7 @@ interface NavigationContextType {
   pauseRotationWithTimer: () => void;
 }
 
-// Default context values
+// Valeur par défaut du contexte
 const NavigationContext = createContext<NavigationContextType>({
   currentCard: null,
   setCurrentCard: () => {},
@@ -34,17 +28,13 @@ interface NavigationProviderProps {
   children: ReactNode;
 }
 
-/**
- * Navigation provider component that manages carousel state and rotation
- * Provides methods for controlling automatic rotation and card selection
- */
 export const NavigationProvider: React.FC<NavigationProviderProps> = ({ children }) => {
   const [currentCard, setCurrentCard] = useState<CarouselCardType | null>(null);
   const [isRotating, setIsRotating] = useState<boolean>(false);
   const [isAutoRotationEnabled, setIsAutoRotationEnabled] = useState<boolean>(true);
   const rotationTimerRef = useRef<NodeJS.Timeout | null>(null);
 
-  // Cleanup rotation timer on component unmount
+  // Nettoyer le timer quand le composant est démonté
   useEffect(() => {
     return () => {
       if (rotationTimerRef.current) {
@@ -53,39 +43,38 @@ export const NavigationProvider: React.FC<NavigationProviderProps> = ({ children
     };
   }, []);
 
-  // Trigger rotation to a specific card
+  // Fonction améliorée pour déclencher la rotation vers une carte
   const rotateToCard = useCallback((cardName: CarouselCardType) => {
     console.log(`Navigation context: Rotating to ${cardName}`);
     setIsRotating(true);
     setCurrentCard(cardName);
     
-    // Reset rotation flag after a short delay
-    // This allows the carousel to know when rotation request is complete
+    // Remettre isRotating à false après une courte période
+    // Cela permet au carousel de savoir quand la rotation a été "consommée"
     setTimeout(() => {
       setIsRotating(false);
     }, 50);
   }, []);
 
-  // Toggle automatic rotation on/off
   const toggleAutoRotation = useCallback(() => {
     setIsAutoRotationEnabled(prev => !prev);
   }, []);
 
-  // Temporarily pause rotation with automatic resume after delay
+  // Nouvelle fonction pour mettre en pause la rotation avec un timer
   const pauseRotationWithTimer = useCallback(() => {
-    // Stop rotation immediately
+    // Arrêter d'abord la rotation
     setIsAutoRotationEnabled(false);
     
-    // Clear any existing timer
+    // Nettoyer un timer existant si présent
     if (rotationTimerRef.current) {
       clearTimeout(rotationTimerRef.current);
     }
     
-    // Set new timer to re-enable rotation after delay
+    // Définir un nouveau timer pour réactiver la rotation après 10 secondes
     rotationTimerRef.current = setTimeout(() => {
       console.log('Navigation context: Re-enabling rotation after timeout');
       setIsAutoRotationEnabled(true);
-    }, 10000); // 10 seconds pause
+    }, 10000); // 10 secondes
   }, []);
 
   return (
@@ -103,8 +92,5 @@ export const NavigationProvider: React.FC<NavigationProviderProps> = ({ children
   );
 };
 
-/**
- * Custom hook for accessing the navigation context
- * Provides carousel control methods and state
- */
+// Hook pour utiliser le contexte
 export const useNavigation = () => useContext(NavigationContext);
