@@ -1,6 +1,6 @@
 
 import { ColorBlindnessType, ThemeColors, ThemeMode } from "../types/themeInterfaces";
-import { useTheme as useThemeContext } from "../contexts/ThemeContext";
+import { useTheme as useThemeContext } from "../contexts/themeContext";
 
 // Renommer cette interface pour éviter toute confusion
 interface UseThemeHookResult {
