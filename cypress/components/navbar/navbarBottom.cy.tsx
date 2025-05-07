@@ -1,5 +1,5 @@
 import NavbarBottom from "../../../src/Components/Navbar/NavbarBottom";
-import { ThemeProvider } from "../../../src/contexts/ThemeContext";
+import { ThemeProvider } from "../../../src/contexts/themeContext";
 
 describe("Tests de responsive pour NavbarBottom", () => {
   it("devrait s'adapter aux différentes tailles d'écran", () => {
