@@ -9,6 +9,9 @@ import DynamicMouseLight from "../DynamiqueMouseLight";
 import DynamicButton3D from "../DynamiqueButton3D";
 import Button3DNavigate from "../Button/Button3DNavigate";
 
+/**
+ * Interface for responsive sizing configuration of NavbarTop elements
+ */
 interface NavbarTopConfig {
   containerPadding: string;
   diceSizeContainer: string;
@@ -19,13 +22,21 @@ interface NavbarTopConfig {
   homeSize: string;
 }
 
+/**
+ * Top navigation bar component with responsive sizing
+ * Contains home button, logo, theme toggle, and dice
+ */
 const NavbarTop: React.FC = () => {
   const { colors, isDarkMode } = useTheme();
   const screenSize = useResponsiveSize();
 
+  // Determine button colors based on current theme
   const cardColor = isDarkMode ? colors.secondary : colors.secondary;
   const textColor = isDarkMode ? colors.primary : colors.primary;
 
+  /**
+   * Get responsive configuration based on current screen size
+   */
   const getNavbarTopConfig = (): NavbarTopConfig => {
     switch (screenSize) {
       case "mobile":
@@ -117,10 +128,12 @@ const NavbarTop: React.FC = () => {
     <nav
       className="w-full transition-colors duration-300 fixed top-0 z-50"
       data-cy="navbar-top"
+      role="navigation"
+      aria-label="Top navigation"
     >
       <div className={`mx-auto ${config.containerPadding}`}>
         <div className={`flex justify-between items-center`}>
-          {/* Home component */}
+          {/* 3D Home button with mouse interaction */}
           <div
             className={`${config.homeContainer} flex items-center justify-center`}
           >
@@ -143,7 +156,8 @@ const NavbarTop: React.FC = () => {
               </DynamicButton3D>
             </Canvas>
           </div>
-          {/* Logo */}
+
+          {/* Application logo */}
           <div
             className={`${config.logoSizeContainer} flex items-center justify-center`}
           >
@@ -153,13 +167,15 @@ const NavbarTop: React.FC = () => {
               className={config.logoSize}
             />
           </div>
-          {/* DarkModeThemeToggle component */}
+
+          {/* Theme toggle switch */}
           <div
             className={`${config.diceSizeContainer} flex items-center justify-center`}
           >
             <DarkModeThemeToggle />
           </div>
-          {/* DiceSixFaces component */}
+
+          {/* Interactive 3D dice component */}
           <div
             className={`${config.diceSizeContainer} flex items-center justify-center`}
           >

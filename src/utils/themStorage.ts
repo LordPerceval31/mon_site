@@ -3,9 +3,7 @@ import { ColorBlindnessType, ThemeMode } from "../types/themeInterfaces";
 export const THEME_MODE_KEY = 'themeMode';
 export const COLOR_BLINDNESS_TYPE_KEY = 'colorBlindnessType';
 
-/**
- * Sauvegarde le mode de thème dans le localStorage
- */
+// Saves theme mode to localStorage
 export const saveThemeMode = (mode: ThemeMode): void => {
   try {
     localStorage.setItem(THEME_MODE_KEY, mode);
@@ -14,9 +12,7 @@ export const saveThemeMode = (mode: ThemeMode): void => {
   }
 };
 
-/**
- * Récupère le mode de thème depuis le localStorage
- */
+// Retrieves theme mode from localStorage
 export const getThemeMode = (): ThemeMode | null => {
   try {
     const mode = localStorage.getItem(THEME_MODE_KEY) as ThemeMode;
@@ -30,9 +26,7 @@ export const getThemeMode = (): ThemeMode | null => {
   }
 };
 
-/**
- * Sauvegarde le type de daltonisme dans le localStorage
- */
+// Saves color blindness type to localStorage
 export const saveColorBlindnessType = (type: ColorBlindnessType): void => {
   try {
     localStorage.setItem(COLOR_BLINDNESS_TYPE_KEY, type);
@@ -41,9 +35,7 @@ export const saveColorBlindnessType = (type: ColorBlindnessType): void => {
   }
 };
 
-/**
- * Récupère le type de daltonisme depuis le localStorage
- */
+// Retrieves color blindness type from localStorage
 export const getColorBlindnessType = (): ColorBlindnessType | null => {
   try {
     const type = localStorage.getItem(COLOR_BLINDNESS_TYPE_KEY) as ColorBlindnessType;
@@ -57,9 +49,7 @@ export const getColorBlindnessType = (): ColorBlindnessType | null => {
   }
 };
 
-/**
- * Détecte la préférence de thème du système
- */
+// Detects system theme preference
 export const getSystemThemePreference = (): ThemeMode => {
   if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
     return 'dark';
@@ -67,9 +57,7 @@ export const getSystemThemePreference = (): ThemeMode => {
   return 'light';
 };
 
-/**
- * Écoute les changements de préférence de thème du système
- */
+// Listens for system theme preference changes
 export const listenToSystemThemeChanges = (callback: (mode: ThemeMode) => void): () => void => {
   const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
   
@@ -82,7 +70,7 @@ export const listenToSystemThemeChanges = (callback: (mode: ThemeMode) => void):
     mediaQuery.addEventListener('change', handleChange);
     return () => mediaQuery.removeEventListener('change', handleChange);
   } else {
-    // Pour la compatibilité avec les anciens navigateurs
+    // For compatibility with older browsers
     mediaQuery.addListener(handleChange);
     return () => mediaQuery.removeListener(handleChange);
   }

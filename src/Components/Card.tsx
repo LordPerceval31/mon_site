@@ -5,6 +5,9 @@ import { GLTF } from "three-stdlib";
 import { useRef, useEffect } from "react";
 import cardGLB from '../assets/card.glb'
 
+/**
+ * Type definition for the 3D card model structure
+ */
 interface CardInterfaceProps extends GLTF {
     nodes: {
         Cube: THREE.Mesh
@@ -12,22 +15,31 @@ interface CardInterfaceProps extends GLTF {
     materials: {
         'Material.001': THREE.MeshBasicMaterial
     }
-
 }
 
+/**
+ * Props interface for the Card component
+ */
 interface CardProps extends GroupProps {
     color?: THREE.ColorRepresentation;
 }
 
+/**
+ * 3D Card component that renders a customizable card model
+ * with interactive cursor behavior
+ */
 const Card = ({ color = 'blue', ...props }: CardProps) => {
     const { nodes, materials } = useGLTF(cardGLB) as CardInterfaceProps;
     const groupRef = useRef<THREE.Group>(null);
+    
+    // Update material color when the color prop changes
     useEffect(() => {
         if (materials['Material.001']) {
             materials['Material.001'].color = new THREE.Color(color);
         }
     }, [materials, color]);
 
+    // Event handlers for interactive cursor feedback
     const handlePointerOver = () => {
         document.body.style.cursor = 'pointer';
     };
@@ -56,6 +68,7 @@ const Card = ({ color = 'blue', ...props }: CardProps) => {
     )
 }
 
+// Preload the card model for better performance
 useGLTF.preload(cardGLB)
 
 export default Card

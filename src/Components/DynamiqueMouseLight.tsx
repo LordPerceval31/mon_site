@@ -3,6 +3,10 @@ import { useFrame, useThree } from "@react-three/fiber";
 import * as THREE from "three";
 import { DynamicMouseLightProps } from "../types/dynamicComponentsInterfaces";
 
+/**
+ * Dynamic directional light that follows mouse movement
+ * Creates interactive lighting effects that respond to cursor position
+ */
 const DynamicMouseLight: React.FC<DynamicMouseLightProps> = ({
   intensity = 1,
   influenceRadius = 300,
@@ -11,15 +15,14 @@ const DynamicMouseLight: React.FC<DynamicMouseLightProps> = ({
   const mousePosition = useRef({ x: 0, y: 0 });
   const { gl } = useThree();
 
-  // Add event listener on mount
+  // Track mouse movement and calculate light influence
   useEffect(() => {
-    // Définir la fonction directement dans le useEffect
     const handleMouseMove = (event: MouseEvent) => {
-      // Get the canvas element and its bounding rect
+      // Get canvas dimensions and position
       const canvas = gl.domElement;
       const rect = canvas.getBoundingClientRect();
 
-      // Calculate center of this canvas
+      // Calculate canvas center coordinates
       const canvasCenterX = rect.left + rect.width / 2;
       const canvasCenterY = rect.top + rect.height / 2;
 
@@ -27,13 +30,13 @@ const DynamicMouseLight: React.FC<DynamicMouseLightProps> = ({
       const relativeX = event.clientX - canvasCenterX;
       const relativeY = event.clientY - canvasCenterY;
 
-      // Calculate distance from mouse to canvas center
+      // Calculate distance from mouse to center
       const distance = Math.sqrt(relativeX * relativeX + relativeY * relativeY);
 
-      // Calculate influence factor
+      // Calculate influence factor (1 at center, 0 beyond influenceRadius)
       const influence = Math.max(0, 1 - distance / influenceRadius);
 
-      // Update mouse position with influence
+      // Store normalized mouse position with applied influence
       mousePosition.current.x = (relativeX / rect.width) * 2 * influence;
       mousePosition.current.y = -(relativeY / rect.height) * 2 * influence;
     };
@@ -45,14 +48,14 @@ const DynamicMouseLight: React.FC<DynamicMouseLightProps> = ({
     };
   }, [gl.domElement, influenceRadius]);
 
-  // Update light position every frame
+  // Update light position and intensity each frame
   useFrame(() => {
     if (lightRef.current) {
-      // Convert to 3D space
+      // Scale mouse movement to 3D world space
       const targetX = mousePosition.current.x * 5;
       const targetY = mousePosition.current.y * 5;
 
-      // Smooth transition using lerp
+      // Apply smooth transition to light position
       lightRef.current.position.x = THREE.MathUtils.lerp(
         lightRef.current.position.x,
         targetX,
@@ -64,7 +67,7 @@ const DynamicMouseLight: React.FC<DynamicMouseLightProps> = ({
         0.1
       );
 
-      // Adjust Z position based on mouse proximity
+      // Dynamically adjust Z position based on mouse proximity
       const targetZ =
         5 - Math.abs(mousePosition.current.x + mousePosition.current.y) * 0.5;
       lightRef.current.position.z = THREE.MathUtils.lerp(
@@ -73,7 +76,7 @@ const DynamicMouseLight: React.FC<DynamicMouseLightProps> = ({
         0.1
       );
 
-      // Optional: Adjust intensity based on mouse proximity
+      // Modulate light intensity based on mouse movement
       const distanceIntensity =
         intensity *
         (0.7 +

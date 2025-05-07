@@ -1,9 +1,13 @@
 import { useTheme } from '../../hooks/useTheme';
 
+/**
+ * Dark Mode Toggle Button component
+ * Allows users to switch between light and dark themes
+ */
 const DarkModeThemeToggle = () => {
   const { isDarkMode, toggleMode, colors } = useTheme();
   
-  // Determine appropriate colors based on current theme
+  // Dynamic color and position values based on current theme
   const buttonBgColor = isDarkMode ? colors.primary : colors.neutral;
   const sunIconColor = isDarkMode ? colors.primary : colors.secondary;
   const moonIconColor = isDarkMode ? colors.primary : colors.neutral;
@@ -44,7 +48,7 @@ const DarkModeThemeToggle = () => {
         </svg>
       </div>
       
-      {/* Moving toggle indicator */}
+      {/* Sliding toggle indicator with smooth transition */}
       <div 
         className={`h-5 w-5 md:h-6 md:w-6 lg:h-7 lg:w-7 rounded-full transition-transform duration-300 absolute left-1 ${togglerPosition}`}
         style={{ backgroundColor: togglerBgColor }}
