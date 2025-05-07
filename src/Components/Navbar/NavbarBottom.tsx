@@ -1,3 +1,4 @@
+
 import React from "react";
 import { useResponsiveSize } from "../../hooks/useResponsiveSize";
 import { Canvas } from "@react-three/fiber";
@@ -7,36 +8,25 @@ import Button3DNavigate from "../Button/Button3DNavigate";
 import useTheme from "../../hooks/useTheme";
 import { CarouselCardType, useNavigation } from "../../contexts/NavigationContext";
 
-// Configuration interface for responsive navbar layout
 interface NavbarBottomConfig {
   containerPadding: string;
   NavbarBottomContainer: string;
   ButtonContainer: string;
 }
 
-// Configuration interface for navigation buttons
 interface ButtonConfig {
   type: "about" | "projects" | "contact" | "settings";
   dataCy: string;
   label: CarouselCardType;
 }
 
-/**
- * Navigation bar component displayed at the bottom of the screen
- * with 3D interactive buttons for main application sections
- */
 const NavbarBottom: React.FC = () => {
   const screenSize = useResponsiveSize();
   const config = getNavbarBottonConfig(screenSize);
-  const { 
-    currentCard, 
-    rotateToCard, 
-    isAutoRotationEnabled, 
-    pauseRotationWithTimer 
-  } = useNavigation();
+  const { currentCard, rotateToCard } = useNavigation();
   const { colors, isDarkMode } = useTheme();
   
-  // Button configuration array for consistent rendering
+  // Tableau de configuration pour les boutons
   const buttonConfigs: ButtonConfig[] = [
     {
       type: "about",
@@ -60,27 +50,23 @@ const NavbarBottom: React.FC = () => {
     },
   ];
 
-  // Check if a button is currently selected
+  // Fonction pour vérifier si un bouton est sélectionné
   const isButtonSelected = (buttonLabel: CarouselCardType): boolean => {
     return buttonLabel === currentCard;
   };
 
-  // Dynamic color calculation based on theme and button state
+  // Couleurs pour les boutons normaux et actifs
   const cardColor = isDarkMode ? colors.secondary : colors.neutral;
   const textColor = isDarkMode ? colors.primary : colors.primary;
+
+  // Couleurs pour le bouton actif
   const activeCardColor = isDarkMode ? colors.neutral : colors.secondary;
   const activeTextColor = isDarkMode ? colors.secondary : colors.primary;
 
-  // Handle button click event with rotation control
+  // Fonction pour gérer le clic sur un bouton
   const handleButtonClick = (label: CarouselCardType) => {
-    console.log(`NavbarBottom: Clicking on ${label}`);
-    
-    pauseRotationWithTimer();
-    
-    if (!isButtonSelected(label)) {
-      console.log(`NavbarBottom: Rotating to ${label}`);
-      rotateToCard(label);
-    }
+    console.log(`NavbarBottom: Rotating to ${label}`);
+    rotateToCard(label);
   };
 
   return (
@@ -121,10 +107,9 @@ const NavbarBottom: React.FC = () => {
                     />
                   </DynamicButton3D>
                 </Canvas>
-                {/* Screen reader text for accessibility */}
+                {/* Ajouter un label visuel mais caché pour l'accessibilité */}
                 <span className="sr-only">
                   {buttonConfig.label} {selected ? '(selected)' : ''}
-                  {selected && !isAutoRotationEnabled ? ' (rotation en pause)' : ''}
                 </span>
               </div>
             );
@@ -135,10 +120,6 @@ const NavbarBottom: React.FC = () => {
   );
 };
 
-/**
- * Get responsive configuration based on screen size
- * Adjusts container dimensions and padding for different devices
- */
 const getNavbarBottonConfig = (screenSize: string): NavbarBottomConfig => {
   switch (screenSize) {
     case "mobile":
@@ -153,11 +134,30 @@ const getNavbarBottonConfig = (screenSize: string): NavbarBottomConfig => {
         NavbarBottomContainer: "h-20 w-[32rem]",
         ButtonContainer: "w-20 h-20",
       };
-    // Desktop and larger screen configurations have identical values
     case "laptop":
+      return {
+        containerPadding: "px-8",
+        NavbarBottomContainer: "h-20 w-[40rem]",
+        ButtonContainer: "w-20 h-20",
+      };
     case "desktop":
+      return {
+        containerPadding: "px-8",
+        NavbarBottomContainer: "h-20 w-[40rem]",
+        ButtonContainer: "w-20 h-20",
+      };
     case "2K":
+      return {
+        containerPadding: "px-8",
+        NavbarBottomContainer: "h-20 w-[40rem]",
+        ButtonContainer: "w-20 h-20",
+      };
     case "ultrawide":
+      return {
+        containerPadding: "px-8",
+        NavbarBottomContainer: "h-20 w-[40rem]",
+        ButtonContainer: "w-20 h-20",
+      };
     case "4k":
       return {
         containerPadding: "px-8",

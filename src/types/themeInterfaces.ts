@@ -1,11 +1,9 @@
 
-
-//Theme mode options and accessibility adaptations
-
+// Types de thème (modes et types de daltonisme)
 export type ThemeMode = 'light' | 'dark';
 export type ColorBlindnessType = 'normal' | 'deuteranopia' | 'protanopia' | 'tritanopia';
 
-// Core theme color structure
+// Structure des couleurs du thème
 export interface ThemeColors {
   primary: string;
   secondary: string;
@@ -16,13 +14,14 @@ export interface ThemeColors {
   textTwo: string;
 }
 
-// Complete theme organization by color blindness type and mode
+// Structure du thème complet
 export interface Theme {
   [key: string]: {
     [key in ThemeMode]: ThemeColors;
   };
 }
-// Theme context interface
+
+// Interface pour le contexte de thème
 export interface ThemeContextProps {
   mode: ThemeMode;
   colorBlindnessType: ColorBlindnessType;
@@ -32,7 +31,7 @@ export interface ThemeContextProps {
   toggleMode: () => void;
 }
 
-//Extended theme hook interface with additional utilities
+// Interface étendue pour le hook useTheme
 export interface UseThemeHookResult extends ThemeContextProps {
   isDarkMode: boolean;
   getColor: (colorName: keyof ThemeColors) => string;

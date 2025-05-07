@@ -1,19 +1,20 @@
-import { useRef, useEffect, useState } from "react";
+import { useGLTF } from "@react-three/drei";
 import * as THREE from "three";
 import { GroupProps, useFrame } from "@react-three/fiber";
-import { useGLTF } from "@react-three/drei";
 import { GLTF } from "three-stdlib";
+import { useRef, useEffect, useState } from "react";
 
-// 3D button models imports
+// Import all button GLB files
 import buttonHomeGLB from "../../assets/buttonHome.glb";
 import buttonAboutGLB from "../../assets/buttonAbout.glb";
 import buttonProjectsGLB from "../../assets/buttonProjects.glb";
 import buttonContactGLB from "../../assets/buttonContact.glb";
 import buttonSettingsGLB from "../../assets/buttonSettings.glb";
 
+// Define type for the button variants
 export type ButtonType = "home" | "about" | "projects" | "contact" | "settings";
 
-// Map button types to GLB files
+// Map each button type to its GLB file
 const buttonGLBMap = {
   home: buttonHomeGLB,
   about: buttonAboutGLB,
@@ -22,6 +23,7 @@ const buttonGLBMap = {
   settings: buttonSettingsGLB,
 };
 
+// Type for the GLB model structure
 type GLTFResult = GLTF & {
   nodes: {
     Circle: THREE.Mesh;
@@ -35,6 +37,7 @@ type GLTFResult = GLTF & {
   };
 };
 
+// Component props interface
 interface Button3DNavigateProps extends GroupProps {
   type: ButtonType;
   color?: THREE.ColorRepresentation;
@@ -42,7 +45,7 @@ interface Button3DNavigateProps extends GroupProps {
   onClick?: () => void;
 }
 
-// Button text position and scale configuration for each type
+// Configuration des positions et échelles pour chaque type
 const buttonConfigMap = {
   home: {
     textPosition: [-0.788, 0.032, 0.127] as [number, number, number],
@@ -66,9 +69,6 @@ const buttonConfigMap = {
   },
 };
 
-
- // 3D Navigation Button component using GLB models
-
 const Button3DNavigate = ({
   type,
   color = "blue",
@@ -76,24 +76,27 @@ const Button3DNavigate = ({
   onClick,
   ...props
 }: Button3DNavigateProps) => {
-  // Color transition states
-  const [targetColorState, setTargetColorState] = useState(new THREE.Color(color));
-  const [targetTextColorState, setTargetTextColorState] = useState(new THREE.Color(textColor));
-  
+  const [targetColorState, setTargetColorState] = useState(
+    new THREE.Color(color)
+  );
+  const [targetTextColorState, setTargetTextColorState] = useState(
+    new THREE.Color(textColor)
+  );
+  // Get the correct GLB path based on button type
   const glbPath = buttonGLBMap[type];
   const config = buttonConfigMap[type];
-  const groupRef = useRef<THREE.Group>(null);
-  
-  // Load 3D model
-  const { nodes, materials } = useGLTF(glbPath) as GLTFResult;
 
-  // Update target colors when props change
+  // Load the GLB model
+  const { nodes, materials } = useGLTF(glbPath) as GLTFResult;
+  const groupRef = useRef<THREE.Group>(null);
+
+  // Update material colors when props change
   useEffect(() => {
     setTargetColorState(new THREE.Color(color));
     setTargetTextColorState(new THREE.Color(textColor));
   }, [color, textColor]);
 
-  // Smooth color transition animation
+  // Appliquer la transition dans useFrame
   useFrame(() => {
     if (materials["Material.002"]) {
       materials["Material.002"].color.lerp(targetColorState, 0.1);
@@ -106,7 +109,7 @@ const Button3DNavigate = ({
     }
   });
 
-  // Event handlers for button interactivity
+  // Event handlers for interactivity
   const handlePointerOver = () => {
     document.body.style.cursor = "pointer";
   };

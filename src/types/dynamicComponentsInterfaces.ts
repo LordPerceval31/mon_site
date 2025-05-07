@@ -1,36 +1,35 @@
 import { GroupProps } from "@react-three/fiber";
 import React from "react";
 
-//Base interface for all dynamic components
+// Interface de base pour les propriétés communes
 export interface DynamicComponentProps {
   influenceRadius?: number;
 }
 
-// Interface for components that respond to mouse interactions
+// Interface pour les composants réagissant à la souris
 export interface MouseInteractiveProps extends DynamicComponentProps {
   intensity?: number;
 }
 
-// Specific interface for DynamicMouseLight component
+// Interface spécifique pour DynamicMouseLight
 export interface DynamicMouseLightProps extends MouseInteractiveProps {
-
 }
 
-//Interface for components with rotation capabilities
+// Interface pour les composants avec rotation
 export interface RotationProps {
-  autoRotate?: boolean;   
-  autoRotateSpeed?: number; 
-  resetSpeed?: number;       
-  rotationIntensity?: {     
+  autoRotate?: boolean;
+  autoRotateSpeed?: number;
+  resetSpeed?: number;
+  rotationIntensity?: {
     x: number;
     y: number;
     z: number;
   };
 }
 
-// Specific interface for DynamicButton3D component
+// Interface spécifique pour DynamicButton3D
 export interface DynamicButton3DProps extends GroupProps, DynamicComponentProps, RotationProps {
-  children: React.ReactNode;               
-  baseRotation?: [number, number, number]; 
-  resetRadius?: number;                    
+  children: React.ReactNode;
+  baseRotation?: [number, number, number];
+  resetRadius?: number;
 }

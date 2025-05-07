@@ -1,6 +1,8 @@
+
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
-import { ThemeMode, ColorBlindnessType, getThemeColors} from '../themes/themeColor';
 import { ThemeColors, ThemeContextProps } from '../types/themeInterfaces';
+import { ColorBlindnessType, getThemeColors, ThemeMode } from '../themes/themeColor';
+
 
 
 const defaultContext: ThemeContextProps = {
@@ -18,19 +20,15 @@ interface ThemeProviderProps {
   children: ReactNode;
 }
 
-/**
- * Theme provider component with accessibility features
- * Manages theme mode and color blindness adaptations
- */
 export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
-  // Initialize theme mode from localStorage or system preference
+  // Récupérer les préférences de l'utilisateur du localStorage ou utiliser les valeurs par défaut
   const [mode, setMode] = useState<ThemeMode>(() => {
     const savedMode = localStorage.getItem('themeMode');
     if (savedMode && (savedMode === 'light' || savedMode === 'dark')) {
       return savedMode;
     }
     
-    // Use system preference as fallback
+    // Vérifier les préférences du système
     if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
       return 'dark';
     }
@@ -38,7 +36,6 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
     return 'light';
   });
   
-  // Initialize color blindness settings from localStorage
   const [colorBlindnessType, setColorBlindnessType] = useState<ColorBlindnessType>(() => {
     const savedType = localStorage.getItem('colorBlindnessType') as ColorBlindnessType;
     return (savedType && ['normal', 'deuteranopia', 'protanopia', 'tritanopia'].includes(savedType)) 
@@ -46,33 +43,33 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
       : 'normal';
   });
 
-  // Derived theme colors based on current settings
+  // Dériver les couleurs actuelles à partir du mode et du type de daltonisme
   const [colors, setColors] = useState<ThemeColors>(getThemeColors(colorBlindnessType, mode));
 
-  // Update colors and apply theme to document when settings change
+  // Mettre à jour les couleurs lorsque le mode ou le type de daltonisme change
   useEffect(() => {
     setColors(getThemeColors(colorBlindnessType, mode));
     
-    // Apply theme attributes to HTML root element
+    // Appliquer le thème à l'élément HTML racine
     document.documentElement.setAttribute('data-theme', mode);
     document.documentElement.setAttribute('data-color-blindness', colorBlindnessType);
     
-    // Save preferences to localStorage
+    // Enregistrer les préférences
     localStorage.setItem('themeMode', mode);
     localStorage.setItem('colorBlindnessType', colorBlindnessType);
     
-    // Apply CSS custom properties for theme colors
+    // Appliquer les variables CSS personnalisées
     Object.entries(getThemeColors(colorBlindnessType, mode)).forEach(([key, value]) => {
       document.documentElement.style.setProperty(`--color-${key}`, value);
     });
   }, [mode, colorBlindnessType]);
 
-  // Toggle between light and dark modes
+  // Fonction pour basculer entre les modes clair et sombre
   const toggleMode = () => {
     setMode(prevMode => prevMode === 'light' ? 'dark' : 'light');
   };
 
-  // Construct context value with current state and methods
+  // Créer la valeur du contexte
   const contextValue: ThemeContextProps = {
     mode,
     colorBlindnessType,
@@ -89,10 +86,7 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
   );
 };
 
-/**
- * Custom hook to access theme context
- * Provides theme state and control methods
- */
+// Hook personnalisé pour utiliser le contexte de thème
 export const useTheme = (): ThemeContextProps => {
   const context = useContext(ThemeContext);
   
@@ -102,6 +96,3 @@ export const useTheme = (): ThemeContextProps => {
   
   return context;
 };
-
-// Export as default for simpler imports
-export default useTheme;
