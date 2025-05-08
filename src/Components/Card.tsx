@@ -4,7 +4,7 @@ import { GroupProps } from "@react-three/fiber";
 import { GLTF } from "three-stdlib";
 import { useRef, useEffect } from "react";
 import cardGLB from '../assets/card.glb'
-//Card
+
 interface CardInterfaceProps extends GLTF {
     nodes: {
         Cube: THREE.Mesh

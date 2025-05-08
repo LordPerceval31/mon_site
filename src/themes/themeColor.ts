@@ -12,7 +12,7 @@ export const themeColors: Theme = {
       secondary: "#EB5E28",
       accent: "#CCC5B9",
       neutral: "#252422",
-      background: "#F5F5F5",
+      background: "#FFFCF2",
       text: "#121212",
       textTwo: "#F5F5F5",
     },

@@ -1,4 +1,3 @@
-
 import React from "react";
 import { useResponsiveSize } from "../../hooks/useResponsiveSize";
 import { Canvas } from "@react-three/fiber";
@@ -26,6 +25,22 @@ const NavbarBottom: React.FC = () => {
   const { currentCard, rotateToCard } = useNavigation();
   const { colors, isDarkMode } = useTheme();
   
+  // Déterminer si on est sur mobile ou tablette
+  const isMobileOrTablet = screenSize === 'mobile' || screenSize === 'tablet';
+  
+  // Si on est sur mobile ou tablette, ne pas rendre le composant
+  if (isMobileOrTablet) {
+    return null;
+  }
+  
+  // Couleurs pour les boutons normaux et actifs
+  const cardColor = isDarkMode ? colors.secondary : colors.neutral;
+  const textColor = isDarkMode ? colors.primary : colors.primary;
+
+  // Couleurs pour le bouton actif
+  const activeCardColor = isDarkMode ? colors.neutral : colors.secondary;
+  const activeTextColor = isDarkMode ? colors.secondary : colors.primary;
+  
   // Tableau de configuration pour les boutons
   const buttonConfigs: ButtonConfig[] = [
     {
@@ -52,16 +67,9 @@ const NavbarBottom: React.FC = () => {
 
   // Fonction pour vérifier si un bouton est sélectionné
   const isButtonSelected = (buttonLabel: CarouselCardType): boolean => {
+    if (currentCard === null) return false;
     return buttonLabel === currentCard;
   };
-
-  // Couleurs pour les boutons normaux et actifs
-  const cardColor = isDarkMode ? colors.secondary : colors.neutral;
-  const textColor = isDarkMode ? colors.primary : colors.primary;
-
-  // Couleurs pour le bouton actif
-  const activeCardColor = isDarkMode ? colors.neutral : colors.secondary;
-  const activeTextColor = isDarkMode ? colors.secondary : colors.primary;
 
   // Fonction pour gérer le clic sur un bouton
   const handleButtonClick = (label: CarouselCardType) => {
