@@ -9,7 +9,7 @@ export const useResponsiveSize = (): ScreenSize => {
   useEffect(() => {
     const handleResize = () => {
       const width = window.innerWidth;
-      if (width < 420) {
+      if (width < 450) {
         setScreenSize('mobile');
       } else if (width < 768) {
         setScreenSize('tablet');

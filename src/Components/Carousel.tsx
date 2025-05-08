@@ -52,7 +52,6 @@ export const Carousel = ({
   const groupRef = useRef<THREE.Group>(null);
   const defaultZ = useRef(5);
   const targetRotationY = useRef<number | null>(null);
-  const swipeStartX = useRef<number | null>(null);
 
   // Interactive state
   const [isHovering, setIsHovering] = useState(false);
@@ -60,8 +59,8 @@ export const Carousel = ({
   // Hooks for theme, responsiveness and navigation
   const { colors, isDarkMode } = useTheme();
   const screenSize = useResponsiveSize();
-  const { camera, gl } = useThree();
-  const { currentCard, isAutoRotationPaused, rotateToCard } = useNavigation();
+  const { camera } = useThree();
+  const { currentCard, isAutoRotationPaused } = useNavigation();
 
   // Derived values for responsiveness and theming
   const isMobileOrTablet = screenSize === "mobile" || screenSize === "tablet";
@@ -69,72 +68,6 @@ export const Carousel = ({
     cardColor || (isDarkMode ? colors.primary : colors.neutral);
   const finalTextColor =
     textColor || (isDarkMode ? colors.background : colors.secondary);
-
-  // Set up touch event handlers
-  useEffect(() => {
-    // Function to find adjacent cards
-    const findAdjacentCards = (currentCardName: CarouselCardType) => {
-      if (!currentCardName) {
-        return {
-          nextCard: "About" as CarouselCardType,
-          prevCard: "Settings" as CarouselCardType,
-        };
-      }
-
-      const currentIndex = cardItems.findIndex(
-        (item) => item === currentCardName
-      );
-      const nextIndex = (currentIndex + 1) % cardItems.length;
-      const prevIndex =
-        (currentIndex - 1 + cardItems.length) % cardItems.length;
-
-      return {
-        nextCard: cardItems[nextIndex],
-        prevCard: cardItems[prevIndex],
-      };
-    };
-
-    // Handler for touch start
-    const handleTouchStart = (e: TouchEvent) => {
-      swipeStartX.current = e.touches[0].clientX;
-    };
-
-    // Handler for touch end
-    const handleTouchEnd = (e: TouchEvent) => {
-      if (swipeStartX.current === null) return;
-
-      const swipeEndX = e.changedTouches[0].clientX;
-      const swipeDistance = swipeStartX.current - swipeEndX;
-
-      // Minimum distance to be considered a swipe
-      const minSwipeDistance = 50;
-
-      if (Math.abs(swipeDistance) > minSwipeDistance && currentCard) {
-        const { nextCard, prevCard } = findAdjacentCards(currentCard);
-
-        if (swipeDistance > 0) {
-          // Swipe left, go to next card
-          rotateToCard(nextCard);
-        } else {
-          // Swipe right, go to previous card
-          rotateToCard(prevCard);
-        }
-      }
-
-      swipeStartX.current = null;
-    };
-
-    // Add event listeners to the canvas
-    const canvas = gl.domElement;
-    canvas.addEventListener("touchstart", handleTouchStart, { passive: true });
-    canvas.addEventListener("touchend", handleTouchEnd, { passive: true });
-
-    // Cleanup
-    return () => {
-      canvas.removeEventListener("touchstart", handleTouchStart);
-      canvas.removeEventListener("touchend", handleTouchEnd);
-    };
-  }, [gl, currentCard, rotateToCard]);
 
   // Effect to position carousel based on currentCard from context
   useEffect(() => {

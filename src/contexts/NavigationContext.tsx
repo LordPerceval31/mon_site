@@ -37,7 +37,7 @@ export const NavigationProvider: React.FC<NavigationProviderProps> = ({ children
     setIsAutoRotationPaused(isMobileOrTablet);
   }, [isMobileOrTablet]);
 
-  // Fonction pour gérer la rotation vers une carte et la pause de 10 secondes
+  // Fonction pour gérer la rotation vers une carte
   const rotateToCard = useCallback((cardName: CarouselCardType) => {
     console.log(`Navigation context: Rotating to ${cardName}`);
     
@@ -58,6 +58,7 @@ export const NavigationProvider: React.FC<NavigationProviderProps> = ({ children
       pauseTimerRef.current = setTimeout(() => {
         console.log('Navigation context: Re-enabling auto-rotation after timeout');
         setIsAutoRotationPaused(false);
+        setCurrentCard(null);
       }, 10000);
     }
   }, [isMobileOrTablet]);
