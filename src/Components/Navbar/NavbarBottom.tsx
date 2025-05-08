@@ -25,14 +25,6 @@ const NavbarBottom: React.FC = () => {
   const { currentCard, rotateToCard } = useNavigation();
   const { colors, isDarkMode } = useTheme();
   
-  // Déterminer si on est sur mobile ou tablette
-  const isMobileOrTablet = screenSize === 'mobile' || screenSize === 'tablet';
-  
-  // Si on est sur mobile ou tablette, ne pas rendre le composant
-  if (isMobileOrTablet) {
-    return null;
-  }
-  
   // Couleurs pour les boutons normaux et actifs
   const cardColor = isDarkMode ? colors.secondary : colors.neutral;
   const textColor = isDarkMode ? colors.primary : colors.primary;
@@ -133,13 +125,13 @@ const getNavbarBottonConfig = (screenSize: string): NavbarBottomConfig => {
     case "mobile":
       return {
         containerPadding: "px-0",
-        NavbarBottomContainer: "h-20 w-[20rem]",
-        ButtonContainer: "w-16 h-16",
+        NavbarBottomContainer: "h-20 w-[24rem]",
+        ButtonContainer: "w-20 h-20",
       };
     case "tablet":
       return {
         containerPadding: "px-0",
-        NavbarBottomContainer: "h-20 w-[32rem]",
+        NavbarBottomContainer: "h-20 w-[28rem]",
         ButtonContainer: "w-20 h-20",
       };
     case "laptop":
