@@ -1,16 +1,13 @@
-// src/Components/Carousel.tsx
 import * as THREE from 'three';
 import { useEffect, useRef, useState } from 'react';
-import { useFrame, useThree } from '@react-three/fiber';
+import { useFrame, useThree, ThreeEvent } from '@react-three/fiber';
 import { Text } from '@react-three/drei';
 import useTheme from '../hooks/useTheme';
 import { useResponsiveSize } from '../hooks/useResponsiveSize';
 import CardTest from './Card';
 import { CarouselCardType, useNavigation } from '../contexts/NavigationContext';
 
-/**
- * Props interface for the 3D rotating carousel
- */
+//Props interface for the 3D rotating carousel
 type CarouselProps = {
   radius?: number;
   cardColor?: string; 
@@ -23,10 +20,20 @@ type CarouselProps = {
 // Available cards in the carousel
 const cardItems: CarouselCardType[] = ['About', 'Projects', 'Contact', 'Settings'];
 
-/**
- * 3D Carousel component that displays cards in a circular arrangement
- * Features automatic rotation, interactive zoom, and synchronization with navigation context
- */
+// Mapping between card names and their visual positions
+const cardPositionMap = {
+  'About': 2,
+  'Projects': 1,
+  'Contact': 0,
+  'Settings': 3
+};
+
+// Function to check if the device is a touch device
+const isTouchDevice = () => {
+  return 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+};
+
+// 3D Carousel component that displays cards in a circular arrangement
 export const Carousel = ({
   radius = 2,
   cardColor, 
@@ -35,87 +42,106 @@ export const Carousel = ({
   zoomFactor = 0.7,
   zoomSpeed = 0.03
 }: CarouselProps) => {
-  // Refs for rotation, animation and position tracking
+  // Refs for the group and rotation handling
   const groupRef = useRef<THREE.Group>(null);
   const defaultZ = useRef(5);
   const targetRotationY = useRef<number | null>(null);
-  const initialRotation = useRef<number>(0);
-  const isFirstRender = useRef<boolean>(true);
   
   // Interactive state
   const [isHovering, setIsHovering] = useState(false);
-  const [activeCardIndex, setActiveCardIndex] = useState<number>(0);
+  const hasTouchScreen = isTouchDevice();
+  const [touchStart, setTouchStart] = useState<number | null>(null);
+  const [touchEnd, setTouchEnd] = useState<number | null>(null);
   
   // Hooks for theme, responsiveness and navigation
   const { colors, isDarkMode } = useTheme();
   const screenSize = useResponsiveSize();
   const { camera } = useThree();
-  const { currentCard, setCurrentCard, isRotating, isAutoRotationEnabled } = useNavigation();
+  const { currentCard, isAutoRotationPaused, rotateToCard } = useNavigation();
   
   // Derived values for responsiveness and theming
   const isMobileOrTablet = screenSize === 'mobile' || screenSize === 'tablet';
   const finalCardColor = cardColor || (isDarkMode ? colors.primary : colors.neutral);
   const finalTextColor = textColor || (isDarkMode ? colors.background : colors.secondary);
 
-  // Store initial rotation on first render
+  // Effect to position carousel based on currentCard from context
   useEffect(() => {
-    if (isFirstRender.current && groupRef.current) {
-      initialRotation.current = groupRef.current.rotation.y;
-      isFirstRender.current = false;
+    if (!groupRef.current || !currentCard) return;
+    
+    // Use the position map to get the correct visual position
+    const targetPosition = cardPositionMap[currentCard];
+    
+    if (targetPosition !== undefined) {
+      // Calculate target angle based on the position
+      const targetAngle = Math.PI + (targetPosition / cardItems.length) * Math.PI * 2;
+      targetRotationY.current = targetAngle;
     }
-  }, []);
+  }, [currentCard]);
+  
+  const findAdjacentCards = (currentCardName: CarouselCardType) => {
+    if (!currentCardName) {
+      return {
+        nextCard: 'About' as CarouselCardType,
+        prevCard: 'Settings' as CarouselCardType
+      };
+    }
+    
+    const currentIndex = cardItems.findIndex(item => item === currentCardName);
+    const nextIndex = (currentIndex + 1) % cardItems.length;
+    const prevIndex = (currentIndex - 1 + cardItems.length) % cardItems.length;
+    
+    return {
+      nextCard: cardItems[nextIndex],
+      prevCard: cardItems[prevIndex]
+    };
+  };
 
-  // Handle rotation requests from navigation context
+  // Convert touch events to pointer events
+  const handlePointerDown = (e: ThreeEvent<PointerEvent>) => {
+    if (hasTouchScreen && e.pointerType === 'touch') {
+      setTouchStart(e.clientX);
+      setTouchEnd(null);
+    }
+  };
+
+  const handlePointerUp = (e: ThreeEvent<PointerEvent>) => {
+    if (hasTouchScreen && e.pointerType === 'touch') {
+      setTouchEnd(e.clientX);
+    }
+  };
+
+  // Effect to handle touch gestures
   useEffect(() => {
-    if (currentCard && groupRef.current && isRotating) {
-      console.log(`Carousel: Received request to rotate to ${currentCard}`);
+    if (touchStart && touchEnd) {
+      // Calculer la distance du swipe
+      const distance = touchStart - touchEnd;
+      const minSwipeDistance = 200;
       
-      // Find index of requested card
-      const targetIndex = cardItems.findIndex(
-        item => item.toLowerCase() === currentCard.toLowerCase()
-      );
-      
-      if (targetIndex !== -1) {
-        // Special solution for About/Contact inversion
-        let targetAngle;
-        
-        // Explicitly invert About and Contact positions
-        if (cardItems[targetIndex] === 'About') {
-          // Use angle for Contact (2/4 * 2π)
-          targetAngle = Math.PI + (2 / cardItems.length) * Math.PI * 2;
-        } else if (cardItems[targetIndex] === 'Contact') {
-          // Use angle for About (0/4 * 2π)
-          targetAngle = Math.PI + (0 / cardItems.length) * Math.PI * 2;
+      if (Math.abs(distance) > minSwipeDistance && currentCard) {
+        const { nextCard, prevCard } = findAdjacentCards(currentCard);
+
+        if (distance > 0) {
+          rotateToCard(nextCard);
         } else {
-          // Calculate normally for other cards
-          targetAngle = Math.PI + (targetIndex / cardItems.length) * Math.PI * 2;
+          rotateToCard(prevCard);
         }
-        
-        const currentAngle = groupRef.current.rotation.y % (Math.PI * 2);
-        let angleDiff = targetAngle - currentAngle;
-        
-        // Normalize angle difference between -π and π for shortest path
-        while (angleDiff > Math.PI) angleDiff -= Math.PI * 2;
-        while (angleDiff < -Math.PI) angleDiff += Math.PI * 2;
-        
-        targetRotationY.current = groupRef.current.rotation.y + angleDiff;
       }
+      setTouchStart(null);
+      setTouchEnd(null);
     }
-  }, [currentCard, isRotating]);
+  }, [touchEnd, touchStart, currentCard, rotateToCard]);
 
-  // Animation frame handler for rotation, card detection and camera zoom
+  // Animation frame handler for rotation and camera zoom
   useFrame((_, delta) => {
     if (!groupRef.current) return;
   
-    // Handle rotation animation
+    // Rotation handling - either towards target or auto-rotation
     if (targetRotationY.current !== null) {
-      // Targeted rotation is always allowed, even if auto-rotation is disabled
       const newRotation = THREE.MathUtils.lerp(
         groupRef.current.rotation.y,
         targetRotationY.current,
         0.05
       );
-      
       groupRef.current.rotation.y = newRotation;
       
       // Stop animation when close enough to target
@@ -123,36 +149,20 @@ export const Carousel = ({
         groupRef.current.rotation.y = targetRotationY.current;
         targetRotationY.current = null;
       }
-    } else if (isAutoRotationEnabled) {
-      // Auto-rotation only if enabled in context
+    } else if (!isAutoRotationPaused) {
+      // Apply auto-rotation only when not paused
       groupRef.current.rotation.y += delta * rotationSpeed;
-    }
-
-    // Detect which card is currently facing the user
-    const normalizedAngle = groupRef.current.rotation.y % (Math.PI * 2);
-    const angleOffset = normalizedAngle > 0 ? normalizedAngle : normalizedAngle + Math.PI * 2;
-    const cardIndex = Math.round(((angleOffset - Math.PI) / (Math.PI * 2)) * cardItems.length) % cardItems.length;
-    const actualIndex = (cardIndex + cardItems.length) % cardItems.length;
-    
-    // Update active card in state and context if changed
-    if (actualIndex !== activeCardIndex) {
-      setActiveCardIndex(actualIndex);
-      
-      // Only update context if not currently rotating to a target
-      if (targetRotationY.current === null) {
-        setCurrentCard(cardItems[actualIndex]);
-      }
     }
     
     // Camera zoom management
-    if (defaultZ.current === 5 && camera.position.z !== 5) {
+    if (defaultZ.current === 3 && camera.position.z !== 3) {
       defaultZ.current = camera.position.z;
     }
     
-    // Smooth zoom transition when hovering !
+    // Smooth zoom transition when hovering or on mobile/tablet
     camera.position.z = THREE.MathUtils.lerp(
       camera.position.z, 
-      isHovering ? defaultZ.current * zoomFactor : defaultZ.current, 
+      isHovering || isMobileOrTablet ? defaultZ.current * zoomFactor : defaultZ.current, 
       zoomSpeed
     );
   });
@@ -168,7 +178,8 @@ export const Carousel = ({
         setIsHovering(false);
         document.body.style.cursor = 'default';
       }}
-
+      onPointerDown={handlePointerDown}
+      onPointerUp={handlePointerUp}
     >
       {cardItems.map((title, i) => {
         // Calculate position on the circle
