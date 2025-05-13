@@ -1,4 +1,4 @@
-// src/pages/HomePage.tsx
+
 import { useTheme } from "../hooks/useTheme";
 import { Canvas } from "@react-three/fiber";
 import { Suspense } from "react";
@@ -20,7 +20,6 @@ const HomePage = () => {
         }}
         data-cy="home-section"
       >
-        {/* Grid qui s'adapte proportionnellement */}
         <div className="grid grid-rows-[min-content_1fr_min-content] h-full">
           {/* NavbarTop - taille minimale nécessaire */}
           <div className="w-full">
