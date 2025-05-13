@@ -5,7 +5,10 @@ import DynamicMouseLight from "../DynamiqueMouseLight";
 import DynamicButton3D from "../DynamiqueButton3D";
 import Button3DNavigate from "../Button/Button3DNavigate";
 import useTheme from "../../hooks/useTheme";
-import { CarouselCardType, useNavigation } from "../../contexts/NavigationContext";
+import {
+  CarouselCardType,
+  useNavigation,
+} from "../../contexts/NavigationContext";
 
 interface NavbarBottomConfig {
   containerPadding: string;
@@ -24,7 +27,7 @@ const NavbarBottom: React.FC = () => {
   const config = getNavbarBottonConfig(screenSize);
   const { currentCard, rotateToCard } = useNavigation();
   const { colors, isDarkMode } = useTheme();
-  
+
   // Couleurs pour les boutons normaux et actifs
   const cardColor = isDarkMode ? colors.secondary : colors.neutral;
   const textColor = isDarkMode ? colors.primary : colors.primary;
@@ -32,28 +35,28 @@ const NavbarBottom: React.FC = () => {
   // Couleurs pour le bouton actif
   const activeCardColor = isDarkMode ? colors.neutral : colors.secondary;
   const activeTextColor = isDarkMode ? colors.secondary : colors.primary;
-  
+
   // Tableau de configuration pour les boutons
   const buttonConfigs: ButtonConfig[] = [
     {
       type: "about",
       dataCy: "about-button",
-      label: "About"
+      label: "About",
     },
     {
       type: "projects",
       dataCy: "projects-button",
-      label: "Projects"
+      label: "Projects",
     },
     {
       type: "contact",
       dataCy: "contact-button",
-      label: "Contact"
+      label: "Contact",
     },
     {
       type: "settings",
       dataCy: "settings-button",
-      label: "Settings"
+      label: "Settings",
     },
   ];
 
@@ -80,7 +83,7 @@ const NavbarBottom: React.FC = () => {
         <div className={`flex justify-between items-center`}>
           {buttonConfigs.map((buttonConfig, index) => {
             const selected = isButtonSelected(buttonConfig.label);
-            
+
             return (
               <div
                 key={index}
@@ -109,7 +112,7 @@ const NavbarBottom: React.FC = () => {
                 </Canvas>
                 {/* Ajouter un label visuel mais caché pour l'accessibilité */}
                 <span className="sr-only">
-                  {buttonConfig.label} {selected ? '(selected)' : ''}
+                  {buttonConfig.label} {selected ? "(selected)" : ""}
                 </span>
               </div>
             );
