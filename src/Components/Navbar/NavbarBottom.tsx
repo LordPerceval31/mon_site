@@ -101,6 +101,7 @@ const NavbarBottom: React.FC = () => {
                     rotationIntensity={{ x: 1.5, y: 1.5, z: 1.2 }}
                     autoRotateSpeed={0.002}
                     resetSpeed={0.08}
+
                   >
                     <Button3DNavigate
                       color={selected ? activeCardColor : cardColor}
@@ -110,7 +111,6 @@ const NavbarBottom: React.FC = () => {
                     />
                   </DynamicButton3D>
                 </Canvas>
-                {/* Ajouter un label visuel mais caché pour l'accessibilité */}
                 <span className="sr-only">
                   {buttonConfig.label} {selected ? "(selected)" : ""}
                 </span>
