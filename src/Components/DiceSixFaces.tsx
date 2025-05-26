@@ -1,4 +1,4 @@
-// src/Components/DiceSixFaces.tsx
+
 import React, { useRef } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
 import { useTexture } from "@react-three/drei";

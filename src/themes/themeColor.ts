@@ -1,11 +1,11 @@
 import { Theme, ThemeColors } from "../types/themeInterfaces";
 
-// src/themes/theme.ts
 export type ThemeMode = 'light' | 'dark';
 export type ColorBlindnessType = 'normal' | 'deuteranopia' | 'protanopia' | 'tritanopia';
 
-// Utilisation du thème existant depuis le fichier importé
+
 export const themeColors: Theme = {
+  // Normal vision
   normal: {
     light: {
       primary: "#FFFCF2",
@@ -26,6 +26,7 @@ export const themeColors: Theme = {
       textTwo: "#121212",
     }
   },
+  // Deuteranopia - difficulty with green colors
   deuteranopia: {
     light: {
       primary: "#FFFCF2",
@@ -46,6 +47,7 @@ export const themeColors: Theme = {
       textTwo: "#121212",
     }
   },
+  // Protanopia - difficulty with red colors
   protanopia: {
     light: {
       primary: "#FFFCF2",
@@ -66,6 +68,7 @@ export const themeColors: Theme = {
       textTwo: "#121212",
     }
   },
+  // Tritanopia - difficulty with blue colors
   tritanopia: {
     light: {
       primary: "#FFFCF2",
@@ -88,7 +91,7 @@ export const themeColors: Theme = {
   }
 };
 
-// Fonction pour obtenir les couleurs du thème
+// Function to get theme colors
 export const getThemeColors = (
   colorBlindness: ColorBlindnessType = 'normal',
   mode: ThemeMode = 'light'

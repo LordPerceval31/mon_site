@@ -4,7 +4,7 @@ import { useFrame, useThree } from "@react-three/fiber";
 import { Text } from "@react-three/drei";
 import useTheme from "../hooks/useTheme";
 import { useResponsiveSize } from "../hooks/useResponsiveSize";
-import CardTest from "./Card";
+import Card from "./Card";
 import { CarouselCardType, useNavigation } from "../contexts/NavigationContext";
 
 /**
@@ -30,9 +30,9 @@ const cardItems: CarouselCardType[] = [
 
 // Mapping between card names and their visual positions
 const cardPositionMap = {
-  About: 2, // Position visuelle différente
+  About: 2,
   Projects: 1,
-  Contact: 0, // Position visuelle différente
+  Contact: 0,
   Settings: 3,
 };
 
@@ -73,7 +73,6 @@ export const Carousel = ({
   useEffect(() => {
     if (!groupRef.current || !currentCard) return;
 
-    // Use the position map to get the correct visual position
     const targetPosition = cardPositionMap[currentCard];
 
     if (targetPosition !== undefined) {
@@ -88,9 +87,7 @@ export const Carousel = ({
   useFrame((_, delta) => {
     if (!groupRef.current) return;
 
-    // Rotation handling - either towards target or auto-rotation
     if (targetRotationY.current !== null) {
-      // Smooth rotation towards target
       const newRotation = THREE.MathUtils.lerp(
         groupRef.current.rotation.y,
         targetRotationY.current,
@@ -158,15 +155,15 @@ export const Carousel = ({
             rotation={[0, Math.PI + angle, 0]}
           >
             <group rotation={cardRotation}>
-              <CardTest color={finalCardColor} />
+              <Card color={finalCardColor} />
             </group>
             <group position={[0, 0.1, 0]} rotation={[0, Math.PI, 0]}>
               <Text
-                position={[0, 0, 0.01]}
-                fontSize={0.2}
-                color={finalTextColor}
-                anchorX="center"
-                anchorY="middle"
+              position={[0,0,0.01]}
+              fontSize={0.2}
+              color={finalTextColor}
+              anchorX="center"
+              anchorY="middle"
               >
                 {title}
               </Text>

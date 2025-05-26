@@ -56,7 +56,6 @@ export const NavigationProvider: React.FC<NavigationProviderProps> = ({ children
       
       // Définir un nouveau timer pour réactiver la rotation après 10 secondes
       pauseTimerRef.current = setTimeout(() => {
-        console.log('Navigation context: Re-enabling auto-rotation after timeout');
         setIsAutoRotationPaused(false);
         setCurrentCard(null);
       }, 10000);
